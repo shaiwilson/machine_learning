@@ -25,14 +25,21 @@ print "training the model"
 print image_train.head()
 print "*********************"
 
+# IMAGE CLASSIFICATION TASK
 # Train a classifier on the raw image pixels using transfered learning
 # deep_feautures already contains the pre-computed deep features for this data
-deep_features_model = gl.logistic_classifier.create(image_train,
-                                                         features=['deep_features'],
-                                                         target='label')
+# features = deep_features pretrained
+# target = thing i'm trying to predict is given by the label column
+# creating a classifier on 2000 images using features computed in 
+# the neural network from: http://s3.amazonaws.com/GraphLab-Datasets/deeplearning/imagenet_model_iter45
+# deep_features_model = gl.logistic_classifier.create(image_train,
+#                                                          features=['deep_features'],
+#                                                          target='label')
+
+# IMAGE RETREVIAL TASK
 
 print "Reading image_test and making predictions"
-
+# apply the deep features model to the images that the user chooses
 print "*********************"
 
 # TODO
