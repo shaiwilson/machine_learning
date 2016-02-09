@@ -1,23 +1,22 @@
 # """Models and database functions for Product Recommender project."""
-
-# # Author : Shai Wilson
+# Author : Shai Wilson
 
 # from flask_sqlalchemy import SQLAlchemy
-
-# # Here's where we create the idea of our database. We're getting this through
-# # the Flask-SQLAlchemy library. On db, we can find the `session`
-# # object, where we do most of our interactions (like committing, etc.)
-
 # db = SQLAlchemy()
 
 import graphlab as gl
 
-# load data set
-image_train=graphlab.SFrame('seed_data/image_train_data/')
-image_test=graphlab.SFrame('seed_data/image_test_data/')
+# .show on a graphlab object returns a json object 
 
-graphlab.canvas.set_target('browser')
-image_train['image'].show()
+# gl.canvas.set_target('browser', 5000)
+# load data set into SFRAMES
+# image_train=gl.SFrame('seed_data/image_train_data/')
+# image_test=gl.SFrame('seed_data/image_test_data/')
+# # image_train['image'].show()
+# print "*********************"
+# print "expect 2005:", len(image_test)
+# convert to python object
+# 
 
 # ##############################################################################
 # # Part 1: Data Visualization
