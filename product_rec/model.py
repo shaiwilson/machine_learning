@@ -8,15 +8,36 @@ import graphlab as gl
 
 # .show on a graphlab object returns a json object 
 
-# gl.canvas.set_target('browser', 5000)
 # load data set into SFRAMES
-# image_train=gl.SFrame('seed_data/image_train_data/')
-# image_test=gl.SFrame('seed_data/image_test_data/')
-# # image_train['image'].show()
-# print "*********************"
-# print "expect 2005:", len(image_test)
-# convert to python object
-# 
+
+print "*********************"
+print "Reading the data"
+image_train=gl.SFrame('seed_data/image_train_data/')
+image_test=gl.SFrame('seed_data/image_test_data/')
+gl.canvas.set_target('browser', 5000)
+
+print "*********************"
+print "expecting 2005 images:", len(image_test)
+print "*********************"
+
+print "*********************"
+print "training the model"
+print image_train.head()
+print "*********************"
+
+# Train a classifier on the raw image pixels using transfered learning
+# deep_feautures already contains the pre-computed deep features for this data
+deep_features_model = gl.logistic_classifier.create(image_train,
+                                                         features=['deep_features'],
+                                                         target='label')
+
+print "Reading image_test and making predictions"
+
+print "*********************"
+
+# TODO
+# covert the column tag_category to a dictionary
+# Apply the deep features model to first few images of test set
 
 # ##############################################################################
 # # Part 1: Data Visualization
