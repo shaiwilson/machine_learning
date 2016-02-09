@@ -13,10 +13,11 @@
 import graphlab as gl
 
 # load data set
-image_train=graphlab.SFrame('image_train_data/')
-image_test=graphlab.SFrame('image_test_data/')
+image_train=graphlab.SFrame('seed_data/image_train_data/')
+image_test=graphlab.SFrame('seed_data/image_test_data/')
 
-graphlab.canvas.set_target('browser', port=5000)
+graphlab.canvas.set_target('browser')
+image_train['image'].show()
 
 # ##############################################################################
 # # Part 1: Data Visualization
