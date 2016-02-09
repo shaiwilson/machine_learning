@@ -37,6 +37,12 @@ print "*********************"
 #                                                          target='label')
 
 # IMAGE RETREVIAL TASK
+# Create a nearest neighbors model for image retrieval 
+# train nearest neighbors model for retrieving images using deep features
+knn_model = graphlab.nearest_neighbors.create(image_train,features=['deep_features'],
+                                             label='id')
+
+
 
 print "Reading image_test and making predictions"
 # apply the deep features model to the images that the user chooses
@@ -44,15 +50,22 @@ print "*********************"
 
 # TODO
 # covert the column tag_category to a dictionary
-# Apply the deep features model to first few images of test set
+
 
 # ##############################################################################
-# # Part 1: Data Visualization
+# # Part 1: Models
 
 
 
 # ##############################################################################
 # # Helper functions
+
+# Use image retrieval model with deep features to find similar images
+# expecting : pair_of_images = image_train[image_id_1:image_id_2]
+# neighbors = get_images_from_ids(knn.model.query(pair_of_images))
+# neighbors['image'].show
+def get_images_from_ids(query_result):
+    return image_train.filter_by(query_result['reference_label'],'id')
 
 def init_app():
     # So that we can use Flask-SQLAlchemy, we'll make a Flask app
