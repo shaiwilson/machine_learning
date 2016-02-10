@@ -49,7 +49,6 @@ image_test.save('my_image_data', format='csv')
 # inspect the images in the data set
 print "*********************"
 print "expecting 4000 images:", len(image_test)
-image_test['images'].print_rows(5)
 print "*********************"
 
 print "*********************"
@@ -61,6 +60,15 @@ print "*********************"
 # use the deduplication toolkit to remove copies
 # how it works: injests data from SFrames and assigns and entity label to each row
 
+# ERROR UNABLE TO AUTOMATICFALLY CONSTRUCT A DISTANCE FUNCTIONFOR FEATURE 'deep_features'
+
+"""
+https://dato.com/learn/userguide/data_matching/deduplication.html
+https://dato.com/learn/gallery/notebooks/machine_learning_with_graphLab_create.html
+https://dato.com/learn/gallery/notebooks/food_retrieval-public.html
+https://dato.com/learn/gallery/notebooks/deep_text_learning.html
+https://dato.com/learn/gallery/
+"""
 dedup = gl.nearest_neighbor_deduplication.create(image_test, row_label='label',
                                                              grouping_features=['label'],
                                                              radius=0.25)
@@ -88,10 +96,6 @@ dupes.print_rows(10, max_row_width=100, max_column_width=50)
 # clean my data
 # image_test_clean = image_test.add_row_number('row_number').filter_by(dedup_test_labels['row_number'], 'row_number')
 # image_test_clean['label']
-
-
-
-print image_test.groupby('label')
 
 # features = deep_features pretrained
 # target = thing i'm trying to predict is given by the label column
