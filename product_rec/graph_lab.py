@@ -1,5 +1,14 @@
 # Author : Shai Wilson
-""" Read seed_data and train images """
+
+"""  
+
+    Part I focuses on loading the data.
+
+    Part II focuses on using a pre-trained neural net to extract visual features.
+
+    Part III focuses on using the extracted visual features to train a nearest neighbors model.
+
+"""
 
 import graphlab as gl
 gl.canvas.set_target('browser')
@@ -34,11 +43,10 @@ print "Reading the data"
 image_train=gl.SFrame('seed_data/image_train_data/')
 image_test=gl.SFrame('seed_data/image_test_data/')
 
-print "*********************"
-for i in range(20):
-	print image_train['id']
-print "*********************"
+# save data table as a text file
+image_test.save('my_image_data', format='csv')
 
+# inspect the images in the data set
 print "*********************"
 print "expecting 4000 images:", len(image_test)
 print "*********************"
@@ -48,6 +56,20 @@ print "training the model"
 print image_train.head()
 print "*********************"
 
+# the data set contains some repeated labels, for instance, cat, dogs
+# use the deduplication toolkit to remove copies
+
+deadup = gl.nearest_neighbor_deduplication.create(image_test, features=['label'],radius=0.25)
+
+# select one element from each entity group to be in my clean label dataset
+dedup_test_labels = deadup['entities'].groupby(key_columns="__entity", operations = {'row_number' : gl.aggregate.SELECT_ONE('row_number')})
+image_test_clean = image_test.add_row_number('row_number').filter_by(dedup_test_labels['row_number'], 'row_number')
+
+image_test_clean['labels']
+
+
+
+print image_test.groupby('label')
 
 # features = deep_features pretrained
 # target = thing i'm trying to predict is given by the label column
@@ -57,21 +79,26 @@ print "*********************"
 #                                                          features=['deep_features'],
 #                                                          target='label')
 
-# def image_retrieval(images):
-# 	""" IMAGE RETREVIAL TASK
-# 	    Create a nearest neighbors model for image retrieval 
-# 	    train nearest neighbors model for retrieving images using deep features"""
-
-#     	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
 
 
 # ##############################################################################
-# # Helper functions
+"""
+Part III: Finding similar images via Nearest Neighbors on Extracted Features
 
-# Overview:
-# server.py obtains image id from db, user clicks
-# sends it here to find the nearest neighbors
-# apply the deep features model to the images that the user chooses
+Overview:
+server.py obtain image_id from db from the image the user clicks
+sends image_id here to find the nearest neighbors
+apply the deep features model to the images that the user chooses.
+
+"""
+
+# def image_retrieval(images):
+#   """ IMAGE RETREVIAL TASK
+#       Create a nearest neighbors model for image retrieval 
+#       train nearest neighbors model for retrieving images using deep features"""
+
+#       knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+
 
 # def get_images_from_ids(query_result):
 # 	"""	Use image retrieval model with deep features to find similar images
