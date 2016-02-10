@@ -49,6 +49,7 @@ image_test.save('my_image_data', format='csv')
 # inspect the images in the data set
 print "*********************"
 print "expecting 4000 images:", len(image_test)
+image_test['images'].print_rows(5)
 print "*********************"
 
 print "*********************"
@@ -58,14 +59,35 @@ print "*********************"
 
 # the data set contains some repeated labels, for instance, cat, dogs
 # use the deduplication toolkit to remove copies
+# how it works: injests data from SFrames and assigns and entity label to each row
 
-deadup = gl.nearest_neighbor_deduplication.create(image_test, features=['label'],radius=0.25)
+dedup = gl.nearest_neighbor_deduplication.create(image_test, row_label='label',
+                                                             grouping_features=['label'],
+                                                             radius=0.25)
 
+print "*********************"
+print "output entity models"
+print dedup.summary()
+print "*********************"
+
+# model's entities attribute contains the deduplication results
 # select one element from each entity group to be in my clean label dataset
-dedup_test_labels = deadup['entities'].groupby(key_columns="__entity", operations = {'row_number' : gl.aggregate.SELECT_ONE('row_number')})
-image_test_clean = image_test.add_row_number('row_number').filter_by(dedup_test_labels['row_number'], 'row_number')
+# add label frequency (count number of images per group)
+entities = dedup['entities']
 
-image_test_clean['labels']
+labels_clean = entities.groupby('__entity', operations = {'row_number' : gl.aggregate.SELECT_ONE('row_number')})
+
+# find the dupe labels
+label_count = dedup['entities'].groupby('__entity', gl.aggregate.COUNT)
+dupe_entities = label_count[label_count['Count'] > 1]['__entity']
+
+# print the results for the dupes
+dupes = labels_clean.filter_by(dupe_entities, '__entity')
+dupes.print_rows(10, max_row_width=100, max_column_width=50)
+
+# clean my data
+# image_test_clean = image_test.add_row_number('row_number').filter_by(dedup_test_labels['row_number'], 'row_number')
+# image_test_clean['label']
 
 
 
