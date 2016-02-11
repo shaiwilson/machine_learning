@@ -51,13 +51,14 @@ print "*********************"
 print "*********************"
 print "save image labels to csv"
 all_image_labels = image_test['label']
-all_image_id.save('all_image_labels.csv')
+image_labels = gl.SArray(all_image_labels)
+all_image_labels.save('all_image_labels.csv')
 print "*********************"
-
+all_image_ids = image_test['id']
+image_id = gl.SArray(all_image_ids)
 print "*********************"
-print "create a new column of the image_id oncatenated with the label"
-image_test['label_and_id'] = image_test['label'] + '|' + image_test['id']
-image_id_and_label = image_test['label_and_id']
+print "create a csv file concatenated with the id and label"
+image_id_and_label = gl.SFrame({'ids': image_id, 'label': image_labels})
 image_id_and_label.save('image_id_and_label.csv')
 print "*********************"
 
