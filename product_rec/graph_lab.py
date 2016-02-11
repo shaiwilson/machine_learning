@@ -11,8 +11,7 @@
 """
 
 import graphlab as gl
-gl.canvas.set_target('browser')
-
+# gl.canvas.set_target('browser')
 
 
 # ##############################################################################
@@ -50,7 +49,8 @@ def read_data(image_test):
 	print "*********************"
 
 # ##############################################################################
-# # Part 2: Use a pre-trained Neural Network to train the images
+# Part 2: Use a pre-trained Neural Network to train the images
+
 def train_images(image_train):
 
 		""" IMAGE CLASSIFICATION TASK
@@ -61,7 +61,7 @@ def train_images(image_train):
 		# target = thing i'm trying to predict is given by the label column
 		# creating a classifier on 4000 images using features computed in 
 		# the neural network from: http://s3.amazonaws.com/GraphLab-Datasets/deeplearning/imagenet_model_iter45
-		
+
 		deep_features_model = gl.logistic_classifier.create(image_train,
 		                                                         features=['deep_features'],
 		                                                         target='label')
@@ -70,35 +70,35 @@ def train_images(image_train):
 
 
 # ##############################################################################
-"""
-Part III: Finding similar images via Nearest Neighbors on Extracted Features
+# Part 3: focuses on using the extracted visual features to train a nearest neighbors model.
 
-Overview:
-server.py obtain image_id from db from the image the user clicks
-sends image_id here to find the nearest neighbors
-apply the deep features model to the images that the user chooses.
+# Overview:
+# 	server.py obtain image_id from db from the image the user clicks
+# 	sends image_id here to find the nearest neighbors
+# 	apply the deep features model to the images that the user chooses.
 
-"""
+def image_retrieval(images):
 
-# def image_retrieval(images):
-#   """ IMAGE RETREVIAL TASK
-#       Create a nearest neighbors model for image retrieval 
-#       train nearest neighbors model for retrieving images using deep features"""
+  """ IMAGE RETREVIAL TASK
+      Create a nearest neighbors model for image retrieval 
+      train nearest neighbors model for retrieving images using deep features"""
 
-#       knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+      knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+      return knn_model
 
 
-# def get_images_from_ids(query_result):
-# 	"""	Use image retrieval model with deep features to find similar images
-# 	expecting : pair_of_images = image_train[image_id_1:image_id_2]
-# 	neighbors = get_images_from_ids(knn.model.query(pair_of_images))
-# 	neighbors['image'].show """
+def get_images_from_ids(query_result):
 
-# 	print "*********************"
-# 	print "Reading in images and making predictions"
-# 	print "*********************"
+	"""	Use image retrieval model with deep features to find similar images
+	expecting : pair_of_images = image_train[image_id_1:image_id_2]
+	neighbors = get_images_from_ids(knn.model.query(pair_of_images))
+	neighbors['image'].show """
 
-#     return image_train.filter_by(query_result['reference_label'],'id')
+	print "*********************"
+	print "Reading in images and making predictions"
+	print "*********************"
+
+    return image_train.filter_by(query_result['reference_label'],'id')
 
 if __name__ == "__main__":
 
@@ -109,12 +109,13 @@ if __name__ == "__main__":
 	image_test=gl.SFrame('seed_data/image_test_data/')
 
     print "*********************"
-	print "training the model"
-	# train_images(image_train)
+	print "training the model with imagenet"
+	# deep_features_model = train_images(image_train)
+	print "*********************"
+	print "training deep features model"
+    # knn_model = image_retrieval(image_train)
 	print "*********************"
 
-    # load_ratings()
-    # set_val_user_id()
 
 
 
