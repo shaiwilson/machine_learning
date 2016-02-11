@@ -13,19 +13,6 @@
 import graphlab as gl
 gl.canvas.set_target('browser')
 
-# .show on a graphlab object returns a json object 
-#
-# [column_names]
-# 0000=id
-# 0001=image
-# 0002=label
-# 0003=deep_features
-# 0004=image_array
-
-
-# TODO
-# covert the column tag_category to a dictionary
-# add image id to database
 
 # ##############################################################################
 # # Part 1: Read Data
@@ -43,8 +30,6 @@ print "Reading the data"
 image_train=gl.SFrame('seed_data/image_train_data/')
 image_test=gl.SFrame('seed_data/image_test_data/')
 
-# save data table as a text file
-# image_test.save('my_image_data', format='csv')
 
 # inspect the images in the data set
 print "*********************"
@@ -56,25 +41,26 @@ print "training the model"
 print image_train.head()
 print "*********************"
 
-# the data set contains some repeated labels, for instance, cat, dogs
-# use the deduplication toolkit to remove copies
-# how it works: injests data from SFrames and assigns and entity label to each row
+# [column_names]
+# 0000=id
+# 0001=image
+# 0002=label
+# 0003=deep_features
+# 0004=image_array
 
 print "*********************"
-print "output entity models"
-image_id = imgage_test['label']
-image_id.export_csv(image_id)
+print "save image labels to csv"
+all_image_labels = image_test['label']
+all_image_id.save('all_image_labels.csv')
 print "*********************"
 
+print "*********************"
+print "create a new column of the image_id oncatenated with the label"
+image_test['label_and_id'] = image_test['label'] + '|' + image_test['id']
+image_id_and_label = image_test['label_and_id']
+image_id_and_label.save('image_id_and_label.csv')
+print "*********************"
 
-
-# clean my data
-# image_test_clean = image_test.add_row_number('row_number').filter_by(dedup_test_labels['row_number'], 'row_number')
-# image_test_clean['label']
-
-
-
-print image_test.groupby('label')
 
 # features = deep_features pretrained
 # target = thing i'm trying to predict is given by the label column
