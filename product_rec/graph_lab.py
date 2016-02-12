@@ -14,7 +14,7 @@ import graphlab as gl
 
 
 # ##############################################################################
-<<<<<<< HEAD
+
 # # Part 1: Read Data
 
 
@@ -93,7 +93,6 @@ dupes.print_rows(10, max_row_width=100, max_column_width=50)
 #                                                          target='label')
 
 
-=======
 # # Part 1: Save Data to CSV
 
 def read_data(image_test):
@@ -126,7 +125,7 @@ def read_data(image_test):
 	image_id_and_label = gl.SFrame({'ids': image_id, 'label': image_labels})
 	image_id_and_label.save('image_id_and_label.csv')
 	print "*********************"
->>>>>>> 3d90b41901a0d7ab9306e21c8eb9ba8854601299
+
 
 # ##############################################################################
 # Part 2: Use a pre-trained Neural Network to train the images
