@@ -34,7 +34,7 @@ def init_app():
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///compvision'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///visuals'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
