@@ -11,7 +11,6 @@
 """
 
 import graphlab as gl
-# gl.canvas.set_target('browser')
 
 
 # ##############################################################################
@@ -77,14 +76,15 @@ def train_images(image_train):
 # 	sends image_id here to find the nearest neighbors
 # 	apply the deep features model to the images that the user chooses.
 
+
 def image_retrieval(images):
 
-  """ IMAGE RETREVIAL TASK
-      Create a nearest neighbors model for image retrieval 
-      train nearest neighbors model for retrieving images using deep features"""
+	""" IMAGE RETREVIAL TASK
+	  Create a nearest neighbors model for image retrieval 
+	  train nearest neighbors model for retrieving images using deep features"""
 
-      knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
-      return knn_model
+	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+	return knn_model
 
 
 def get_images_from_ids(query_result):
@@ -98,35 +98,22 @@ def get_images_from_ids(query_result):
 	print "Reading in images and making predictions"
 	print "*********************"
 
-    return image_train.filter_by(query_result['reference_label'],'id')
+	return # image_train.filter_by(query_result['reference_label'],'id')
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-	print "*********************"
-	print "Reading the data"
+print "*********************"
+print "Reading the data"
 
-	image_train=gl.SFrame('seed_data/image_train_data/')
-	image_test=gl.SFrame('seed_data/image_test_data/')
+image_train=gl.SFrame('seed_data/image_train_data/')
+image_test=gl.SFrame('seed_data/image_test_data/')
 
-    print "*********************"
-	print "training the model with imagenet"
-	# deep_features_model = train_images(image_train)
-	print "*********************"
-	print "training deep features model"
-    # knn_model = image_retrieval(image_train)
-	print "*********************"
-
-
-
-
-
-
-
-
-
-
-
-
-
+print "*********************"
+print "training the model with imagenet"
+# deep_features_model = train_images(image_train)
+print "*********************"
+print "training deep features model"
+# knn_model = image_retrieval(image_train)
+print "*********************"
 
 
