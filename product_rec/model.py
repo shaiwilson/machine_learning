@@ -15,6 +15,8 @@ class Image(db.Model):
 
     image_id = db.Column(db.Integer, primary_key=True)
     image_label = db.Column(db.String(64), nullable=False)
+    # this needs to be list of tags added by the user
+    image_tags = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
