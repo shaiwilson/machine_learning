@@ -59,15 +59,15 @@ def search_db():
 
 
 # ADD UPDATE DB
-@app.route("/update_tags", methods=['POST'])
+@app.route("/images/<int:image_id>", methods=['POST'])
 def add_tag():
     """Add/edit a tag"""
 
-    # # get form variables
-    # new_tag = request.form["tag"]
-    # image_id = request.form["image_id"]
-    # if not tag:
-    #     raise Exception("No tag given")
+    # get form variables
+    new_tag = request.form["tag"]
+    image_id = request.form["image_id"]
+    if not tag:
+        raise Exception("No tag given")
 
 
 # SHOW ALL ROUTES
@@ -83,8 +83,8 @@ def tag_list():
 def image_list():
     """Show grid of images."""
 
-    # images = Image.query.all()
-    # return render_template("image_list.html", images=image)
+    images = Image.query.all()
+    return render_template("image_list.html", images=images)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
