@@ -14,7 +14,7 @@ class Image(db.Model):
     __tablename__ = "images"
 
     image_id = db.Column(db.Integer, primary_key=True)
-    image_label = db.Column(db.String(64), db.ForeignKey('imagetags.tag_id'), nullable=False) 
+    image_label = db.Column(db.String(64), nullable=False) 
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -40,13 +40,17 @@ class Image_Tags(db.Model):
 
     __tablename__ = "imagetags"
 
-    image_id = db.Column(db.Integer, primary_key=True)
-    tag_id = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    image_id = db.Column(db.Integer, db.ForeignKey('images.image_id'), nullable=False)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'), nullable=False)
 
     # Define relationship to Images
     image = db.relationship("Image",
-                            backref=db.backref("imagetags", order_by=tag_id))
+                            backref=db.backref("imagetags", order_by=image_id))
 
+     # Define relationship to Images
+    tag = db.relationship("Tag",
+                            backref=db.backref("imagetags", order_by=tag_id))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
