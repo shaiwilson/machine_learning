@@ -25,6 +25,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/welcome')
 def train():
     """Train image data."""
+    gl.canvas.set_target('browser')
     graph_lab.my_batch_job('seed_data/image_train_data/')
     return render_template("welcome.html")
 
@@ -32,15 +33,21 @@ def train():
 @app.route('/')
 def index():
     """Homepage."""
-    gl.canvas.set_target('browser')
     return render_template("homepage.html")
 
-@app.route('/search', methods=['GET'])
+@app.route('/search')
+def show_search_form():
+    """Search page."""
+    return render_template("search.html")
+
+
+@app.route('/search_tags', methods=["POST"])
 def search_db():
     """Search page."""
 
-    text_query = request.args.get["query"]
+    text_query = request.form["query"]
     print text_query
+    return render_template("search.html")
 
     # image_ids = Image.query.filter_by(image_label=text_query).all()
 
