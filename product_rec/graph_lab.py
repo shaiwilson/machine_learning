@@ -136,9 +136,10 @@ def get_images_from_ids(image_train, query_result):
 
 	return image_train.filter_by(query_result['reference_label'],'id')
 
-
+# generic image retieval model
 
 def my_batch_job(path_train):
+
 	print "Load common image analysis data set"
 	image_train=gl.SFrame(path_train)
 	# image_train = setup_training(image_train)
@@ -150,60 +151,51 @@ def my_batch_job(path_train):
 	# 	  Create a nearest neighbors model for image retrieval 
 	# 	  train nearest neighbors model for retrieving images using deep features
 
-	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
-	
-	# split SFRAMES
+	knn_generic_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+	return knn_generic_model	
+
+# Category specific image retrieval models
+
+def dog_category():
+	""" Evaluates whether the image is similar enough to dog images """
+
 	dog_model = gl.SFrame(image_train[image_train['label'] == 'dog'])
+	knn_dog_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='dog')
+	return knn_dog_model
+
+
+def cat_category():
+	""" Evaluates whether the image is similar enough to cat images """
+
 	cat_model = gl.SFrame(image_train[image_train['label'] == 'cat']) 
-	auto_model = gl.SFrame(image_train[image_train['label'] == 'auto']) 
-	bird_model = gl.SFrame(image_train[image_train['label'] == 'bird'])  
-	
+	knn_cat_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='cat')
+	return knn_cat_model
+
+def model_query(model_type, label_type, knn_model):
+
+	""" Return the query result for specific category of image.
+	model_type = dog, cat, bird, auto
+	label_type = cat, dog, unknown
+	EX: cat_neighbors = get_images_from_ids(knn_model.query(cat)) """
+
+	closest_neighbors = get_images_from_ids(model_type, knn_model.query(label_type))
+
+	return closest_neighbors 
 	
 
 	# print "*********************"
 	# cat = image_train[18:19]
-	# cat_neighbors = get_images_from_ids(image_train, knn_model.query(cat))
+	
 
-	# # show similar cats
+	# show similar cats
 	# cat_neighbors['image'].show()
 
 
-# 	image_train=gl.SFrame('seed_data/image_train_data/')
-# 	# image_train = setup_training(image_train)
-
-# 	print "*********************"
-# 	print "training nearest neighbors model"
-# 	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
-# 	print "*********************"
 # 	cat = image_train[18:19]
 # 	cat_neighbors = get_images_from_ids(knn_model.query(cat))
 
 # 	# show similar cats
 # 	cat_neighbors['image'].show()
-
-
-
-# now have a trained model to use for nearest neighbor 
-# generate nearest neighbor
-# gl.canvas.set_target('browser')
-# cat = image_train[18:19]
-# cat['image'].show
-
-
-
-	# print "*********************"
-	# print "Reading the data"
-
-	# image_train=gl.SFrame('seed_data/image_train_data/')
-	# image_test=gl.SFrame('seed_data/image_test_data/')
-
-	# print "*********************"
-	# print "training the model with imagenet"
-	# # deep_features_model = train_images(image_train)
-	# print "*********************"
-	# print "training deep features model"
-	# # knn_model = image_retrieval(image_train)
-	# print "*********************"
 
 
 

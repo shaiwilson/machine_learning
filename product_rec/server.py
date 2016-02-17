@@ -7,6 +7,7 @@ from jinja2 import StrictUndefined
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
+from model import connect_to_db, db, Image
 
 import graphlab as gl
 import graph_lab
@@ -20,33 +21,31 @@ app.secret_key = "ABC"
 # This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 
-# IMAGES = [
-#     { "id": 1, "url": "http://unsplash.it/320/200"},
-#     { "id": 2, "url": "http://unsplash.it/300/200"},
-#     { "id": 3, "url": "http://unsplash.it/290/200"},
-#     { "id": 4, "url": "http://unsplash.it/350/200"},
-#     { "id": 5, "url": "http://unsplash.it/380/200"},
-#     { "id": 6, "url": "http://unsplash.it/360/200"},
-#     { "id": 7, "url": "http://unsplash.it/380/200"},
-#     { "id": 8, "url": "http://unsplash.it/320/200"},
-#     { "id": 9, "url": "http://unsplash.it/300/200"},
-#     { "id": 10, "url": "http://unsplash.it/290/200"},
-#     { "id": 11, "url": "http://unsplash.it/350/200"},
-#     { "id": 12, "url": "http://unsplash.it/360/200"}
-# ]
 
 @app.route('/welcome')
 def train():
     """Train image data."""
     graph_lab.my_batch_job('seed_data/image_train_data/')
-    # return render_template("homepage.html", images=IMAGES)
+    return render_template("welcome.html")
 
 
 @app.route('/')
 def index():
     """Homepage."""
     gl.canvas.set_target('browser')
-    # return render_template("homepage.html", images=IMAGES)
+    return render_template("homepage.html")
+
+@app.route('/search', methods=['GET'])
+def search_db():
+    """Search page."""
+
+    text_query = request.args.get["query"]
+    print text_query
+
+    # image_ids = Image.query.filter_by(image_label=text_query).all()
+
+
+    # return render_template("results.html")
 
 @app.route("/add-to-favorites", methods=["POST"])
 def add_to_favorites():
