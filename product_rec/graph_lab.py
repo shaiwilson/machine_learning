@@ -131,12 +131,21 @@ def my_batch_job(path_train):
 	# 	  train nearest neighbors model for retrieving images using deep features
 
 	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
-	print "*********************"
-	cat = image_train[18:19]
-	cat_neighbors = get_images_from_ids(image_train, knn_model.query(cat))
+	
+	# split SFRAMES
+	dog_model = image_train[image_train['label'] == 'dog']
+	cat_model = image_train[image_train['label'] == 'cat'] 
+	auto_model = image_train[image_train['label'] == 'auto'] 
+	bird_model = image_train[image_train['label'] == 'bird']  
+	
+	
 
-	# show similar cats
-	cat_neighbors['image'].show()
+	# print "*********************"
+	# cat = image_train[18:19]
+	# cat_neighbors = get_images_from_ids(image_train, knn_model.query(cat))
+
+	# # show similar cats
+	# cat_neighbors['image'].show()
 
 
 # 	image_train=gl.SFrame('seed_data/image_train_data/')

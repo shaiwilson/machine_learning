@@ -4,7 +4,7 @@
 
 from jinja2 import StrictUndefined
 
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 
@@ -35,6 +35,11 @@ app.jinja_env.undefined = StrictUndefined
 #     { "id": 12, "url": "http://unsplash.it/360/200"}
 # ]
 
+@app.route('/welcome')
+def train():
+    """Train image data."""
+    graph_lab.my_batch_job('seed_data/image_train_data/')
+    # return render_template("homepage.html", images=IMAGES)
 
 
 @app.route('/')
@@ -64,10 +69,9 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
     app.debug = True
-    graph_lab.my_batch_job('seed_data/image_train_data/')
     # connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
     app.run()
