@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <style>
+
+        body{
+            padding: 2em;
+            font-family: sans-serif;
+        }
+
+        #gallery {
+        }
+
+        #gallery > div {
+            width: 20%;
+            display: inline-block;
+            margin: 0 2em 2em 0;
+        }
+
+        #gallery > div > img {
+            height: 150px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+    </style>
+
+    <h1>Gallery</h1>
+    <div id="gallery">
+        {% for image in images %}
+            <div>
+                <img src="{{ image.url }}" alt="a pretty image you can favorite">
+                <button id="{{ image.id }}" class="favorite-btn">&hearts; Favorite</button>
+            </div>
+        {% endfor %}
+    </div>   
+
+{% endblock %}

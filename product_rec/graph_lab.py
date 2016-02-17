@@ -34,8 +34,8 @@ image_test=gl.SFrame('seed_data/image_test_data/')
 # use the deduplication toolkit to remove copies
 # how it works: injests data from SFrames and assigns and entity label to each row
 
-def read_data(image_test):
-
+def save_data(image_test):
+	import graphlab as gl
 	"""Save image_train data to csv"""
 
 	# inspect the images in the data set
@@ -57,13 +57,39 @@ def read_data(image_test):
 	image_labels = gl.SArray(all_image_labels)
 	all_image_labels.save('all_image_labels.csv')
 	print "*********************"
-	all_image_ids = image_test['id']
+	all_image_ids = image_test['id'].astype(int)
 	image_id = gl.SArray(all_image_ids)
 	print "*********************"
 	print "create a csv file concatenated with the id and label"
 	image_id_and_label = gl.SFrame({'ids': image_id, 'label': image_labels})
 	image_id_and_label.save('image_id_and_label.csv')
 	print "*********************"
+
+def clean_test_data(path):
+
+	print "*********************"
+	print "Reading the test data"
+
+	image_test=gl.SFrame('seed_data/image_test_data/')
+	return image_test
+
+def clean_train_data(path):
+
+	print "*********************"
+	print "Reading the training data"
+
+	image_train=gl.SFrame('seed_data/image_train_data/')
+	return image_train
+
+
+
+def setup_training(image_train):
+	import graphlab as gl
+
+	print "*********************"
+	print "Given the deep features, train a classifier"
+	deep_features_model = train_images(image_train)
+	return deep_features_model
 
 
 # ##############################################################################
@@ -74,7 +100,7 @@ def train_images(image_train):
 		""" IMAGE CLASSIFICATION TASK
 		Train a classifier on the raw image pixels using transfered learning
 		deep_feautures already contains the pre-computed deep features for this data. """
-
+		import graphlab as gl
 		# features = deep_features pretrained
 		# target = thing i'm trying to predict is given by the label column
 		# creating a classifier on 4000 images using features computed in 
@@ -96,43 +122,80 @@ def train_images(image_train):
 # 	apply the deep features model to the images that the user chooses.
 
 
-def image_retrieval(images):
-
-	""" IMAGE RETREVIAL TASK
-	  Create a nearest neighbors model for image retrieval 
-	  train nearest neighbors model for retrieving images using deep features"""
-
-	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
-	return knn_model
-
-
-def get_images_from_ids(query_result):
+def get_images_from_ids(image_train, query_result):
 
 	"""	Use image retrieval model with deep features to find similar images
 	expecting : pair_of_images = image_train[image_id_1:image_id_2]
 	neighbors = get_images_from_ids(knn.model.query(pair_of_images))
 	neighbors['image'].show """
 
+	import graphlab as gl
 	print "*********************"
 	print "Reading in images and making predictions"
 	print "*********************"
 
 	return image_train.filter_by(query_result['reference_label'],'id')
 
-if __name__ == "__main__":
+# generic image retieval model
+
+def my_batch_job(path_train):
+
+	print "Load common image analysis data set"
+	image_train=gl.SFrame(path_train)
+	# image_train = setup_training(image_train)
 
 	print "*********************"
-	print "Reading the data"
+	print "training nearest neighbors model"
+	
+	#  IMAGE RETREVIAL TASK
+	# 	  Create a nearest neighbors model for image retrieval 
+	# 	  train nearest neighbors model for retrieving images using deep features
 
-	image_train=gl.SFrame('seed_data/image_train_data/')
-	image_test=gl.SFrame('seed_data/image_test_data/')
+	knn_generic_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+	return knn_generic_model	
 
-	print "*********************"
-	print "training the model with imagenet"
-	# deep_features_model = train_images(image_train)
-	print "*********************"
-	print "training deep features model"
-	# knn_model = image_retrieval(image_train)
-	print "*********************"
+# Category specific image retrieval models
+
+def dog_category():
+	""" Evaluates whether the image is similar enough to dog images """
+
+	dog_model = gl.SFrame(image_train[image_train['label'] == 'dog'])
+	knn_dog_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='dog')
+	return knn_dog_model
+
+
+def cat_category():
+	""" Evaluates whether the image is similar enough to cat images """
+
+	cat_model = gl.SFrame(image_train[image_train['label'] == 'cat']) 
+	knn_cat_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='cat')
+	return knn_cat_model
+
+def model_query(model_type, label_type, knn_model):
+
+	""" Return the query result for specific category of image.
+	model_type = dog, cat, bird, auto
+	label_type = cat, dog, unknown
+	EX: cat_neighbors = get_images_from_ids(knn_model.query(cat)) """
+
+	closest_neighbors = get_images_from_ids(model_type, knn_model.query(label_type))
+
+	return closest_neighbors 
+	
+
+	# print "*********************"
+	# cat = image_train[18:19]
+	
+
+	# show similar cats
+	# cat_neighbors['image'].show()
+
+
+# 	cat = image_train[18:19]
+# 	cat_neighbors = get_images_from_ids(knn_model.query(cat))
+
+# 	# show similar cats
+# 	cat_neighbors['image'].show()
+
 
 
