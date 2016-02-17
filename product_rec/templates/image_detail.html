@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>{{ image.image_label }}</h1>
+
+      <form action="/image/{{ image.image_id }}" method="POST">
+          <label>New Tag:
+              <input type="text" name="tag">
+          </label>
+           <input type="hidden" name="image_id" value="{{ image.image_id }}">
+          <input type="submit" value="Add Tag">
+      </form>
+  {% endif %}
+
+{% endblock %}

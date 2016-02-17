@@ -123,7 +123,9 @@ def my_batch_job(path_train):
 	print "Load common image analysis data set"
 	image_train=gl.SFrame(path_train)
 	# image_train = setup_training(image_train)
+	return image_train
 
+def knn_model_generic(image_train):
 	print "*********************"
 	print "training nearest neighbors model"
 	

@@ -26,9 +26,20 @@ app.jinja_env.undefined = StrictUndefined
 def train():
     """Train image data."""
 
-    gl.canvas.set_target('browser')
-    graph_lab.my_batch_job('seed_data/image_train_data/')
+    image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
+    show_cats(image_train)
     return render_template("welcome.html")
+
+@app.route('/cats')
+def show_cats(image_train):
+    """Show cat images."""
+
+    cat = image_train[18:19]
+    knn_model = graph_lab.knn_model_generic(image_train)
+    cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
+    print cat_neighbors
+    # cat_neighbors['image'].show()
+    # image_list(cats)
 
 
 @app.route('/')
@@ -63,11 +74,11 @@ def search_db():
 def add_tag():
     """Add/edit a tag"""
 
-    # get form variables
-    new_tag = request.form["tag"]
-    image_id = request.form["image_id"]
-    if not tag:
-        raise Exception("No tag given")
+    # # get form variables
+    # new_tag = request.form["tag"]
+    # image_id = request.form["image_id"]
+    # if not tag:
+    #     raise Exception("No tag given")
 
 
 # SHOW ALL ROUTES
@@ -80,10 +91,10 @@ def tag_list():
     return render_template("tags_list.html", tags=tags)
 
 @app.route("/images")
-def image_list():
+def image_list(images):
     """Show grid of images."""
 
-    images = Image.query.all()
+    # images = Image.query.all()
     return render_template("image_list.html", images=images)
 
 if __name__ == "__main__":
@@ -91,6 +102,7 @@ if __name__ == "__main__":
     # that we invoke the DebugToolbarExtension
     app.debug = True
     connect_to_db(app)
+    gl.canvas.set_target('browser')
 
     # Use the DebugToolbar
     # DebugToolbarExtension(app)
