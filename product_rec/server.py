@@ -57,14 +57,18 @@ def search_db():
 
     # return render_template("results.html")
 
-@app.route("/add-to-favorites", methods=["POST"])
-def add_to_favorites():
 
-    photo_id = request.form.get("id")
+# ADD UPDATE DB
+@app.route("/update_tags", methods=['POST'])
+def add_tag():
+    """Add/edit a tag"""
 
-    # put this in a "favorites" table?
+    # # get form variables
+    # new_tag = request.form["tag"]
+    # image_id = request.form["image_id"]
+    # if not tag:
+    #     raise Exception("No tag given")
 
-    return jsonify(status="success", id=photo_id)
 
 # SHOW ALL ROUTES
 
@@ -81,15 +85,6 @@ def image_list():
 
     # images = Image.query.all()
     # return render_template("image_list.html", images=image)
-
-# @app.route("/add-to-favorites", methods=["POST"])
-# def add_to_favorites():
-
-#     photo_id = request.form.get("id")
-
-#     # put this in a "favorites" table?
-
-#     return jsonify(status="success", id=photo_id)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
