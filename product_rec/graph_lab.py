@@ -19,7 +19,6 @@ import graphlab as gl
 
 
 def save_data(image_test):
-	import graphlab as gl
 	"""Save image_train data to csv"""
 
 	# inspect the images in the data set
@@ -137,7 +136,7 @@ def my_batch_job(path_train):
 
 # Category specific image retrieval models
 
-def dog_category():
+def dog_category(image_train):
 	""" Evaluates whether the image is similar enough to dog images """
 
 	dog_model = gl.SFrame(image_train[image_train['label'] == 'dog'])
@@ -145,7 +144,7 @@ def dog_category():
 	return knn_dog_model
 
 
-def cat_category():
+def cat_category(image_train):
 	""" Evaluates whether the image is similar enough to cat images """
 
 	cat_model = gl.SFrame(image_train[image_train['label'] == 'cat']) 
