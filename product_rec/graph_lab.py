@@ -139,9 +139,14 @@ def get_images_from_ids(image_train, query_result):
 # generic image retieval model
 
 def my_batch_job(path_train):
-
+	""" Load common image analysis data set"""
 	print "Load common image analysis data set"
+
 	image_train=gl.SFrame(path_train)
+	return image_train
+
+def image_model_generic(path_train):
+
 	# image_train = setup_training(image_train)
 
 	print "*********************"
@@ -181,21 +186,11 @@ def model_query(model_type, label_type, knn_model):
 	closest_neighbors = get_images_from_ids(model_type, knn_model.query(label_type))
 
 	return closest_neighbors 
-	
-
-	# print "*********************"
-	# cat = image_train[18:19]
-	
-
-	# show similar cats
-	# cat_neighbors['image'].show()
 
 
-# 	cat = image_train[18:19]
-# 	cat_neighbors = get_images_from_ids(knn_model.query(cat))
 
-# 	# show similar cats
-# 	cat_neighbors['image'].show()
+
+
 
 
 
