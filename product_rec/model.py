@@ -26,7 +26,7 @@ class Tag(db.Model):
 
     __tablename__ = "tags"
 
-    tag_id = db.Column(db.Integer, primary_key=True)
+    tag_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     tag_label = db.Column(db.String(64), nullable=False)
 
 
@@ -36,12 +36,16 @@ class Tag(db.Model):
         return "<Tag tag_id=%s label=%s>" % (self.tag_id, self.tag_label)
 
 class Image_Tags(db.Model):
-    """Model many-to-Many relationship between images and tags."""
+    """Tags of an image by image."""
 
     __tablename__ = "imagetags"
 
     image_id = db.Column(db.Integer, primary_key=True)
     tag_id = db.Column(db.Integer, nullable=False)
+
+    # Define relationship to Images
+    image = db.relationship("Image",
+                            backref=db.backref("imagetags", order_by=tag_id))
 
 
     def __repr__(self):
@@ -50,29 +54,17 @@ class Image_Tags(db.Model):
         return "<Tag image_id=%s tag_id=%s>" % (self.iamge_id, self.tag_id)
 
 
-def init_app():
-    # So that we can use Flask-SQLAlchemy, we'll make a Flask app
-    from flask import Flask
-    app = Flask(__name__)
-
-    connect_to_db(app)
-    print "Connected to DB."
-
-
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///visuals'
-    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
 
 if __name__ == "__main__":
 
-    # So that we can use Flask-SQLAlchemy, we'll make a Flask app
-    from flask import Flask
-    app = Flask(__name__)
-
+ 
+    from server import app
     connect_to_db(app)
     print "Connected to DB."
