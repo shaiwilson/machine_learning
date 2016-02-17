@@ -14,7 +14,7 @@ class Image(db.Model):
     __tablename__ = "images"
 
     image_id = db.Column(db.Integer, primary_key=True)
-    image_label = db.Column(db.String(64), nullable=False) 
+    image_label = db.Column(db.String(64), db.ForeignKey('imagetags.tag_id'), nullable=False) 
 
     def __repr__(self):
         """Provide helpful representation when printed."""

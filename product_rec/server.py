@@ -7,7 +7,7 @@ from jinja2 import StrictUndefined
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
-from model import connect_to_db, db, Image
+from model import connect_to_db, db, Image, Tag, Image_Tags
 
 import graphlab as gl
 import graph_lab
@@ -25,6 +25,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/welcome')
 def train():
     """Train image data."""
+
     gl.canvas.set_target('browser')
     graph_lab.my_batch_job('seed_data/image_train_data/')
     return render_template("welcome.html")
@@ -33,11 +34,13 @@ def train():
 @app.route('/')
 def index():
     """Homepage."""
+
     return render_template("homepage.html")
 
 @app.route('/search')
 def show_search_form():
     """Search page."""
+
     return render_template("search.html")
 
 
@@ -63,6 +66,14 @@ def add_to_favorites():
 
     return jsonify(status="success", id=photo_id)
 
+# SHOW ALL ROUTES
+
+@app.route("/tags")
+def tag_list():
+    """Show list of tags."""
+
+    tags = Tag.query.all()
+    return render_template("tags_list.html", tags=tags)
 
 @app.route("/images")
 def image_list():
@@ -84,7 +95,7 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
     app.debug = True
-    # visuals.connect_to_db(app)
+    connect_to_db(app)
 
     # Use the DebugToolbar
     # DebugToolbarExtension(app)
