@@ -153,10 +153,10 @@ def my_batch_job(path_train):
 	knn_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
 	
 	# split SFRAMES
-	dog_model = image_train[image_train['label'] == 'dog']
-	cat_model = image_train[image_train['label'] == 'cat'] 
-	auto_model = image_train[image_train['label'] == 'auto'] 
-	bird_model = image_train[image_train['label'] == 'bird']  
+	dog_model = gl.SFrame(image_train[image_train['label'] == 'dog'])
+	cat_model = gl.SFrame(image_train[image_train['label'] == 'cat']) 
+	auto_model = gl.SFrame(image_train[image_train['label'] == 'auto']) 
+	bird_model = gl.SFrame(image_train[image_train['label'] == 'bird'])  
 	
 	
 
