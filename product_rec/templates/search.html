@@ -2,20 +2,23 @@
 {% block content %}
 
 
+<div class="well spaced" style="width:40%;">
+<div>
+
 <h1>Search</h1>
     <form action="/search_tags" method="POST">
 
-        <div>
+        <div class="form-group">
             <label>Search by tags:
-                <input type="text" name="query" required>
+                <input type="text" name="query" required class="form-control">
             </label>
         </div>
 
-        <div>
-            <input type="submit" value="Search">
+        <div class="form-group">
+            <input type="submit" value="Search" class="btn btn-danger">
         </div>
-
     </form>
-
+</div>
+</div>
 
 {% endblock %}
