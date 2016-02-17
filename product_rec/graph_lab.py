@@ -18,24 +18,7 @@ import graphlab as gl
 # # Part 1: Read Data
 
 
-"""Loads data set into SFRAMES
-
-	IMAGE CLASSIFICATION TASK
-	Train a classifier on the raw image pixels using transfered learning
-	deep_feautures already contains the pre-computed deep features for this data. """
-
-print "*********************"
-print "Reading the data"
-
-image_train=gl.SFrame('seed_data/image_train_data/')
-image_test=gl.SFrame('seed_data/image_test_data/')
-
-# the data set contains some repeated labels, for instance, cat, dogs
-# use the deduplication toolkit to remove copies
-# how it works: injests data from SFrames and assigns and entity label to each row
-
 def save_data(image_test):
-	import graphlab as gl
 	"""Save image_train data to csv"""
 
 	# inspect the images in the data set
@@ -82,9 +65,7 @@ def clean_train_data(path):
 	return image_train
 
 
-
 def setup_training(image_train):
-	import graphlab as gl
 
 	print "*********************"
 	print "Given the deep features, train a classifier"
@@ -129,7 +110,6 @@ def get_images_from_ids(image_train, query_result):
 	neighbors = get_images_from_ids(knn.model.query(pair_of_images))
 	neighbors['image'].show """
 
-	import graphlab as gl
 	print "*********************"
 	print "Reading in images and making predictions"
 	print "*********************"
@@ -161,19 +141,19 @@ def image_model_generic(path_train):
 
 # Category specific image retrieval models
 
-def dog_category():
+def dog_category(image_train):
 	""" Evaluates whether the image is similar enough to dog images """
 
 	dog_model = gl.SFrame(image_train[image_train['label'] == 'dog'])
-	knn_dog_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='dog')
+	knn_dog_model = gl.nearest_neighbors.create(dog_model,features=['deep_features'], label='dog')
 	return knn_dog_model
 
 
-def cat_category():
+def cat_category(image_train):
 	""" Evaluates whether the image is similar enough to cat images """
 
 	cat_model = gl.SFrame(image_train[image_train['label'] == 'cat']) 
-	knn_cat_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='cat')
+	knn_cat_model = gl.nearest_neighbors.create(cat_model,features=['deep_features'], label='cat')
 	return knn_cat_model
 
 def model_query(model_type, label_type, knn_model):
@@ -186,11 +166,6 @@ def model_query(model_type, label_type, knn_model):
 	closest_neighbors = get_images_from_ids(model_type, knn_model.query(label_type))
 
 	return closest_neighbors 
-
-
-
-
-
 
 
 

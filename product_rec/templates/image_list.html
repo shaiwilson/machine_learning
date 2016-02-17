@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<div class="well spaced" style="width:50%;">
 <h1> Cool pics </h1>
     <div id="gallery">
         {% for image in images %}
             <div>
-<!--                 <img src="{{ image.url }}" alt="a pretty image you can favorite">
-                <button id="{{ image.id }}" class="favorite-btn">&hearts; Favorite</button> -->
+<!--                 <button id="{{ image.image_id }}" class="favorite-btn">&hearts; Favorite</button> -->
+                <a href="/images/{{ image.image_id }}">DISPLAY IMAGE HERE</a>
             </div>
         {% endfor %}
+    </div>
     </div>   
 {% endblock %}
+
