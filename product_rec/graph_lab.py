@@ -14,7 +14,25 @@ import graphlab as gl
 
 
 # ##############################################################################
-# # Part 1: Save Data to CSV
+
+# # Part 1: Read Data
+
+
+"""Loads data set into SFRAMES
+
+	IMAGE CLASSIFICATION TASK
+	Train a classifier on the raw image pixels using transfered learning
+	deep_feautures already contains the pre-computed deep features for this data. """
+
+print "*********************"
+print "Reading the data"
+
+image_train=gl.SFrame('seed_data/image_train_data/')
+image_test=gl.SFrame('seed_data/image_test_data/')
+
+# the data set contains some repeated labels, for instance, cat, dogs
+# use the deduplication toolkit to remove copies
+# how it works: injests data from SFrames and assigns and entity label to each row
 
 def save_data(image_test):
 	import graphlab as gl
@@ -73,6 +91,7 @@ def setup_training(image_train):
 	deep_features_model = train_images(image_train)
 	return deep_features_model
 
+
 # ##############################################################################
 # Part 2: Use a pre-trained Neural Network to train the images
 
@@ -116,6 +135,7 @@ def get_images_from_ids(image_train, query_result):
 	print "*********************"
 
 	return image_train.filter_by(query_result['reference_label'],'id')
+
 
 
 def my_batch_job(path_train):
@@ -168,5 +188,22 @@ def my_batch_job(path_train):
 # gl.canvas.set_target('browser')
 # cat = image_train[18:19]
 # cat['image'].show
+
+
+
+	# print "*********************"
+	# print "Reading the data"
+
+	# image_train=gl.SFrame('seed_data/image_train_data/')
+	# image_test=gl.SFrame('seed_data/image_test_data/')
+
+	# print "*********************"
+	# print "training the model with imagenet"
+	# # deep_features_model = train_images(image_train)
+	# print "*********************"
+	# print "training deep features model"
+	# # knn_model = image_retrieval(image_train)
+	# print "*********************"
+
 
 
