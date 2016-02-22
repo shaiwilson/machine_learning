@@ -11,6 +11,9 @@
 """
 
 import graphlab as gl
+from PIL import Image
+from IPython.display import display
+from IPython.display import Image
 
 
 # ##############################################################################
@@ -126,8 +129,8 @@ def my_batch_job(path_train):
 	return image_train
 
 def image_model_generic(path_train):
-
-	# image_train = setup_training(image_train)
+	""" A simple image retrieval system that finds the nearest neighbors 
+	for any image. """
 
 	print "*********************"
 	print "training nearest neighbors model"
@@ -136,7 +139,7 @@ def image_model_generic(path_train):
 	# 	  Create a nearest neighbors model for image retrieval 
 	# 	  train nearest neighbors model for retrieving images using deep features
 
-	knn_generic_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+	knn_generic_model = gl.nearest_neighbors.create(path_train,features=['deep_features'], label='id')
 	return knn_generic_model	
 
 # Category specific image retrieval models
@@ -166,6 +169,39 @@ def model_query(model_type, label_type, knn_model):
 	closest_neighbors = get_images_from_ids(model_type, knn_model.query(label_type))
 
 	return closest_neighbors 
+
+# ##############################################################################
+# Part 4: Get k=2 nearest neighbors
+
+# Overview:
+# 	server.py obtain image_id from db from the image the user clicks
+# 	sends image_id here to find the nearest neighbors
+# 	apply the deep features model to the images that the user chooses.
+
+
+# ##############################################################################
+# Part 5: focuses on using the extracted visual features to train a nearest neighbors model.
+
+# Overview:
+# 	server.py obtain image_id from db from the image the user clicks
+# 	sends image_id here to find the nearest neighbors
+# 	apply the deep features model to the images that the user chooses.
+
+
+# # Show images
+# def show_graphlab_image(i):
+
+#     img = Image(filename=image_train['label'][i], width=100, height=100)
+#     display(img)
+
+# def show_images(my_images, field):
+#     for x in my_images:
+#         x = x[field]
+#         print "id " + str(x) + " -> " + image_train['label'][x] + ":"
+#         show_graphlab_image(x)
+
+
+# show_images(image_train, 'label') 
 
 
 

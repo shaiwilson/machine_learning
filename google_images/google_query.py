@@ -15,36 +15,38 @@ size = 256,256
 # print "hello, world."
 
 def go(query, path):
+    """"Download full size images from Google image search."""
+
   BASE_URL = 'https://ajax.googleapis.com/ajax/services/search/images?'\
              'v=1.0&q=' + query + '&start=%d'
   
   if not os.path.exists(path):
     os.makedirs(path)
 
-    start = 0
-      while start < 60:
-        r = requests.get(BASE_URL % start)
-        if json.loads(r.text)['responseData']['results'] is not None:
-          for image_info in json.loads(r.text)['responseData']['results']:
-            url = image_info['unescapedUrl']
-            try:
-              image_r = requests.get(url)
-            except ConnectionError, e:
-              print 'could not download %s' % url
-              continue
-            title = image_info['titleNoFormatting'].replace('/', '').replace('\\', '')
-            file = open(os.path.join(path, '%s.jpg') % title, 'w')
-            try:
-              img = Image.open(StringIO(image_r.content))
-              img.thumbnail(size, Image.ANTIALIAS)
-              Image.open(StringIO(image_r.content)).save(file, 'JPEG')
-              imread(file.name)
-            except IOError, e:
-              os.remove(file.name)
-              continue
-            finally:
-              file.close()
-          start += 4
+  start = 0
+  while start < 60:
+    r = requests.get(BASE_URL % start)
+    if json.loads(r.text)['responseData']['results'] is not None:
+      for image_info in json.loads(r.text)['responseData']['results']:
+        url = image_info['unescapedUrl']
+        try:
+          image_r = requests.get(url)
+        except ConnectionError, e:
+          print 'could not download %s' % url
+          continue
+        title = image_info['titleNoFormatting'].replace('/', '').replace('\\', '')
+        file = open(os.path.join(path, '%s.jpg') % title, 'w')
+        try:
+          img = Image.open(StringIO(image_r.content))
+          img.thumbnail(size, Image.ANTIALIAS)
+          Image.open(StringIO(image_r.content)).save(file, 'JPEG')
+          imread(file.name)
+        except IOError, e:
+          os.remove(file.name)
+          continue
+        finally:
+          file.close()
+      start += 4
 
 def clean(path):
   i = 0
