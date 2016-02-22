@@ -159,6 +159,8 @@ def cat_category(image_train):
 	knn_cat_model = gl.nearest_neighbors.create(cat_model,features=['deep_features'], label='cat')
 	return knn_cat_model
 
+# A generic function to automate get_image_by_id based for 
+# either a specific category or for a generic sampling
 def model_query(model_type, label_type, knn_model):
 
 	""" Return the query result for specific category of image.
@@ -171,7 +173,7 @@ def model_query(model_type, label_type, knn_model):
 	return closest_neighbors 
 
 # ##############################################################################
-# Part 4: Get k=2 nearest neighbors
+# Part 4: Clustering
 
 # Overview:
 # 	server.py obtain image_id from db from the image the user clicks
@@ -180,7 +182,7 @@ def model_query(model_type, label_type, knn_model):
 
 
 # ##############################################################################
-# Part 5: focuses on using the extracted visual features to train a nearest neighbors model.
+# Part 5: 
 
 # Overview:
 # 	server.py obtain image_id from db from the image the user clicks
@@ -188,20 +190,18 @@ def model_query(model_type, label_type, knn_model):
 # 	apply the deep features model to the images that the user chooses.
 
 
-# # Show images
-# def show_graphlab_image(i):
+# Show images
+def show_graphlab_image(i, image_train):
 
-#     img = Image(filename=image_train['label'][i], width=100, height=100)
-#     display(img)
+    img = Image(filename=image_train['label'][i], width=100, height=100)
+    display(img)
 
-# def show_images(my_images, field):
-#     for x in my_images:
-#         x = x[field]
-#         print "id " + str(x) + " -> " + image_train['label'][x] + ":"
-#         show_graphlab_image(x)
+def show_images(image_train, field):
+    for x in image_train:
+        x = x[field] # i.e : cat
+        print "id " + str(x) + " -> " + image_train['label'] + ":"
+        # show_graphlab_image(image_train, x)
 
-
-# show_images(image_train, 'label') 
 
 
 

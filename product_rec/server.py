@@ -28,11 +28,14 @@ def train():
 
     gl.canvas.set_target('browser')
     image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
-    # generic model
+
+    # test a generic model for cats
     knn_model = graph_lab.image_model_generic(image_train)
     cat = image_train[18:19]
     cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
-    cat_neighbors['image'].show()
+
+    graph_lab.show_images(cat_neighbors, 'image') 
+    # cat_neighbors['image'].show()
 
     return render_template("welcome.html")
 
