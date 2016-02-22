@@ -65,6 +65,12 @@ if __name__ == "__main__":
     images_resized['image'] = gl.image_analysis.resize(images['image'], 256, 256, 3)
     images_resized = images_resized.add_row_number()
 
+    # use deep learning model
+
+    pretrained_model = gl.load_model('http://s3.amazonaws.com/dato-datasets/deeplearning/imagenet_model_iter45')
+    images_resized['extracted_features'] = pretrained_model.extract_features(images_resized)
+
+    images_resized.show()
 
 
 
