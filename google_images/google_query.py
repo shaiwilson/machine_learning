@@ -52,12 +52,18 @@ def clean(path):
     os.rename(path + '/' + f, path + '/' + str(i) + '.jpg')
     i += 1
 
- 
-go('barcelona building', 'images')
-go('barcelona buildings', 'images')
+if __name__ == "__main__":
 
-clean('images')
+    go('barcelona building', 'images')
+    go('barcelona buildings', 'images')
 
+    clean('images')
+
+    images = gl.image_analysis.load_images('images', random_order=False, with_path=True)
+
+    images_resized = gl.SFrame()
+    images_resized['image'] = gl.image_analysis.resize(images['image'], 256, 256, 3)
+    images_resized = images_resized.add_row_number()
 
 
 
