@@ -8,6 +8,7 @@ from PIL import Image
 from StringIO import StringIO
 from requests.exceptions import ConnectionError
 from scipy.misc import imread
+import graphlab as gl
 
 size = 256,256
 
@@ -45,9 +46,20 @@ def go(query, path):
               file.close()
           start += 4
 
+def clean(path):
+  i = 0
+  for f in os.listdir(path):
+    os.rename(path + '/' + f, path + '/' + str(i) + '.jpg')
+    i += 1
+
+ 
+go('barcelona building', 'images')
+go('barcelona buildings', 'images')
+
+clean('images')
 
 
 
 
 
-          
+
