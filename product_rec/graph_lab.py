@@ -11,10 +11,7 @@
 """
 
 import graphlab as gl
-from PIL import Image
-from IPython.display import display
-from IPython.display import Image
-
+from array import array
 
 # ##############################################################################
 
@@ -132,9 +129,8 @@ def my_batch_job(path_train):
 def image_model_generic(path_train):
 	""" A simple image retrieval system that finds the nearest neighbors 
 	for any image. """
->>>>>>> 5632191900bcff0bd20e6af73c1b260dbe9c642d
 
-def knn_model_generic(image_train):
+def knn_model_generic(path_train):
 	print "*********************"
 	print "training nearest neighbors model"
 	
@@ -193,18 +189,15 @@ def model_query(model_type, label_type, knn_model):
 # 	apply the deep features model to the images that the user chooses.
 
 
-# Show images
-def show_graphlab_image(i, image_train):
+# # Show images
+# def show_graphlab_image(i, image_train):
 
-    img = Image(filename=image_train['label'][i], width=100, height=100)
-    display(img)
+#     img = Image(filename=image_train['label'][i], width=100, height=100)
+#     display(img)
 
-def show_images(image_train, field):
-    for x in image_train:
-        x = x[field] # i.e : cat
-        print "id " + str(x) + " -> " + image_train['label'] + ":"
-        # show_graphlab_image(image_train, x)
-
-
-
+# def show_images(image_train, field):
+#     for x in image_train:
+#         x = x[field] # i.e : cat
+#         print "id " + str(x) + " -> " + image_train['label'] + ":"
+#         # show_graphlab_image(image_train, x)
 

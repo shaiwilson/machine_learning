@@ -8,7 +8,7 @@ from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from model import connect_to_db, db, Image, Tag, Image_Tags
-
+from array import array
 import graphlab as gl
 import graph_lab
 
@@ -26,22 +26,21 @@ app.jinja_env.undefined = StrictUndefined
 def train():
     """Train image data."""
 
-<<<<<<< HEAD
-    image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
-    show_cats(image_train)
-=======
+
     gl.canvas.set_target('browser')
     image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
 
     # test a generic model for cats
-    knn_model = graph_lab.image_model_generic(image_train)
+    knn_model = graph_lab.knn_model_generic(image_train)
     cat = image_train[18:19]
     cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
 
-    graph_lab.show_images(cat_neighbors, 'image') 
+    # graph_lab.show_images(cat_neighbors, 'image') 
     # cat_neighbors['image'].show()
 
->>>>>>> 5632191900bcff0bd20e6af73c1b260dbe9c642d
+    cat_neighbors['img_array'] = cat_neighbors['image'].astype(array)
+    print cat_neighbors['img_array']
+
     return render_template("welcome.html")
 
 @app.route('/cats')
