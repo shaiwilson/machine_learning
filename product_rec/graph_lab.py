@@ -11,6 +11,9 @@
 """
 
 import graphlab as gl
+from PIL import Image
+from IPython.display import display
+from IPython.display import Image
 
 
 # ##############################################################################
@@ -119,11 +122,17 @@ def get_images_from_ids(image_train, query_result):
 # generic image retieval model
 
 def my_batch_job(path_train):
-
+	""" Load common image analysis data set"""
 	print "Load common image analysis data set"
+
 	image_train=gl.SFrame(path_train)
-	# image_train = setup_training(image_train)
+
 	return image_train
+
+def image_model_generic(path_train):
+	""" A simple image retrieval system that finds the nearest neighbors 
+	for any image. """
+>>>>>>> 5632191900bcff0bd20e6af73c1b260dbe9c642d
 
 def knn_model_generic(image_train):
 	print "*********************"
@@ -133,7 +142,7 @@ def knn_model_generic(image_train):
 	# 	  Create a nearest neighbors model for image retrieval 
 	# 	  train nearest neighbors model for retrieving images using deep features
 
-	knn_generic_model = gl.nearest_neighbors.create(image_train,features=['deep_features'], label='id')
+	knn_generic_model = gl.nearest_neighbors.create(path_train,features=['deep_features'], label='id')
 	return knn_generic_model	
 
 # Category specific image retrieval models
@@ -153,6 +162,8 @@ def cat_category(image_train):
 	knn_cat_model = gl.nearest_neighbors.create(cat_model,features=['deep_features'], label='cat')
 	return knn_cat_model
 
+# A generic function to automate get_image_by_id based for 
+# either a specific category or for a generic sampling
 def model_query(model_type, label_type, knn_model):
 
 	""" Return the query result for specific category of image.
@@ -163,6 +174,37 @@ def model_query(model_type, label_type, knn_model):
 	closest_neighbors = get_images_from_ids(model_type, knn_model.query(label_type))
 
 	return closest_neighbors 
-	
+
+# ##############################################################################
+# Part 4: Clustering
+
+# Overview:
+# 	server.py obtain image_id from db from the image the user clicks
+# 	sends image_id here to find the nearest neighbors
+# 	apply the deep features model to the images that the user chooses.
+
+
+# ##############################################################################
+# Part 5: 
+
+# Overview:
+# 	server.py obtain image_id from db from the image the user clicks
+# 	sends image_id here to find the nearest neighbors
+# 	apply the deep features model to the images that the user chooses.
+
+
+# Show images
+def show_graphlab_image(i, image_train):
+
+    img = Image(filename=image_train['label'][i], width=100, height=100)
+    display(img)
+
+def show_images(image_train, field):
+    for x in image_train:
+        x = x[field] # i.e : cat
+        print "id " + str(x) + " -> " + image_train['label'] + ":"
+        # show_graphlab_image(image_train, x)
+
+
 
 

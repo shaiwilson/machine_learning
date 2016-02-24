@@ -26,8 +26,22 @@ app.jinja_env.undefined = StrictUndefined
 def train():
     """Train image data."""
 
+<<<<<<< HEAD
     image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
     show_cats(image_train)
+=======
+    gl.canvas.set_target('browser')
+    image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
+
+    # test a generic model for cats
+    knn_model = graph_lab.image_model_generic(image_train)
+    cat = image_train[18:19]
+    cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
+
+    graph_lab.show_images(cat_neighbors, 'image') 
+    # cat_neighbors['image'].show()
+
+>>>>>>> 5632191900bcff0bd20e6af73c1b260dbe9c642d
     return render_template("welcome.html")
 
 @app.route('/cats')
