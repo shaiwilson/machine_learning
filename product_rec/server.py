@@ -40,7 +40,7 @@ def train():
     # cat_neighbors['image'].show()
 
     # first version
-    # cat_neighbors['img_array'] = cat_neighbors['image'].astype(array)
+
 
     # after search query returns images send to show page
     image_list(cat_neighbors)
@@ -57,15 +57,32 @@ def train():
 def image_list(cat_neighbors):
     """Show grid of images."""
     image_array = np.array(cat_neighbors)
+    # result_array = np.empty((0, 100))
+    img_dat = dict()
+    for i, v in enumerate(cat_neighbors['image_array']):
+         img_dat[i] = v[1:]
+
+    print img_dat
+    # print image_array
     # holds pixel data
+    print "***********************"
+    print '\n'
     a = np.array(cat_neighbors['image_array'])
+    print "***********************"
+    print '\n'
+    # print cat_neighbors['id']
+    # print cat_neighbors.filter_by('image_array')
+    print '\n'
+    # print "***********************"
+    # print cat_neighbors['image_array']
+    # print a
 
     # img = PIL.Image.fromarray(a)
 
     # # holds id of images
     # b = np.array(cat_neighbors['id'])
     # print b
-    
+
     print "image", len(image_array)
     print "cat neighbors: ",  len(cat_neighbors)
     # image_array = image_array.reshape(len(cat_neighbors), len(image_array))
