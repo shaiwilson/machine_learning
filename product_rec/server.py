@@ -9,6 +9,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from model import connect_to_db, db, Image, Tag, Image_Tags
 from array import array
+import numpy as np
 import graphlab as gl
 import graph_lab
 
@@ -38,8 +39,9 @@ def train():
     # graph_lab.show_images(cat_neighbors, 'image') 
     # cat_neighbors['image'].show()
 
-    cat_neighbors['img_array'] = cat_neighbors['image'].astype(array)
-    print cat_neighbors['img_array']
+    # cat_neighbors['img_array'] = cat_neighbors['image'].astype(array)
+    a = np.array(cat_neighbors['image_array'])
+    print "**********************"
 
     return render_template("welcome.html")
 
