@@ -39,11 +39,29 @@ def train():
     # graph_lab.show_images(cat_neighbors, 'image') 
     # cat_neighbors['image'].show()
 
+    # first version
     # cat_neighbors['img_array'] = cat_neighbors['image'].astype(array)
-    a = np.array(cat_neighbors['image_array'])
-    print "**********************"
 
+    # after search query returns images send to show page
+    image_list(cat_neighbors)
+    
+
+    print "**********************"
     return render_template("welcome.html")
+
+@app.route("/images")
+def image_list(cat_neighbors):
+    """Show grid of images."""
+    image_array = np.array(cat_neighbors['image_array'], np.float32)
+    print "image", len(image_array)
+    print "cat neighbors: ",  len(cat_neighbors)
+    image_array = image_array.reshape(len(cat_neighbors), len(image_array))
+
+    print(image_array)
+    # images = Image.query.all()
+    # return render_template("image_list.html")
+
+
 
 @app.route('/cats')
 def show_cats(image_train):
@@ -105,12 +123,6 @@ def tag_list():
     tags = Tag.query.all()
     return render_template("tags_list.html", tags=tags)
 
-@app.route("/images")
-def image_list(images):
-    """Show grid of images."""
-
-    # images = Image.query.all()
-    return render_template("image_list.html", images=images)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
