@@ -56,13 +56,26 @@ def train():
 @app.route("/images")
 def image_list(cat_neighbors):
     """Show grid of images."""
+    # holds an array column
     image_array = np.array(cat_neighbors)
-    # result_array = np.empty((0, 100))
+    # new_image_table = cat_neighbors.unpack('image_array')
+    # print new_image_table
     img_dat = dict()
     for i, v in enumerate(cat_neighbors['image_array']):
-         img_dat[i] = v[1:]
+        print '\n'   
+        print v
+        print '\n'
+        b = v[1:]
+        print b
+        # Now let's convert to an Sarray of image type. The images are of size 28 x 28 x 1
+        # (since they are grayscale). Since the scaling will still result in some non-integer
+        # values, we want to set allow_rounding to True.
 
-    print img_dat
+        # rslt_img_sarray = gl.SArray.pixel_array_to_image(v, 32, 32, 3, allow_rounding = True)
+  
+         # img_dat[i] = b
+
+    # print img_dat
     # print image_array
     # holds pixel data
     print "***********************"
