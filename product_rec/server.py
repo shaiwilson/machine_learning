@@ -49,19 +49,33 @@ def train():
     print "**********************"
     return render_template("welcome.html")
 
+
+# what do u do when the dictionary key is a tuple, first item 
+# is a string and the second item is a list of ints
+
 @app.route("/images")
 def image_list(cat_neighbors):
     """Show grid of images."""
-    image_array = np.array(cat_neighbors['image_array'], np.float32)
+    image_array = np.array(cat_neighbors)
+    # holds pixel data
+    a = np.array(cat_neighbors['image_array'])
+
+    # img = PIL.Image.fromarray(a)
+
+    # # holds id of images
+    # b = np.array(cat_neighbors['id'])
+    # print b
+    
     print "image", len(image_array)
     print "cat neighbors: ",  len(cat_neighbors)
-    image_array = image_array.reshape(len(cat_neighbors), len(image_array))
+    # image_array = image_array.reshape(len(cat_neighbors), len(image_array))
+    # print image_array
 
-    print(image_array)
     # images = Image.query.all()
     # return render_template("image_list.html")
 
-
+# def transform_to_pil(pix):
+#     data = list(tuple(pixel) for pixel in pix)
 
 @app.route('/cats')
 def show_cats(image_train):
