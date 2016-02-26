@@ -9,6 +9,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from model import connect_to_db, db, Image, Tag, Image_Tags
 from array import array
+from PIL import Image
 import numpy as np
 import graphlab as gl
 import graph_lab
@@ -40,14 +41,25 @@ def train():
     # cat_neighbors['image'].show()
 
     # first version
+    print cat_neighbors['image_array']
+    print "***********************"
+
+    cat_neighbors["image_show"] = cat_neighbors['image_array'].pixel_array_to_image(32, 32, 3, allow_rounding = True)
+    print cat_neighbors
+    # print images
+    image_array = np.array(cat_neighbors['image_array'])
+    result = array2PIL(image_array, len(cat_neighbors['image_array']))
 
 
-    # after search query returns images send to show page
-    image_list(cat_neighbors)
-    
-
-    print "**********************"
     return render_template("welcome.html")
+
+def array2PIL(arr, size):
+        mode = 'RGBA'
+        arr = arr.reshape(arr.shape[0]*arr.shape[1], arr.shape[2])
+        if len(arr[0]) == 3:
+            arr = numpy.c_[arr, 255*numpy.ones((len(arr),1), numpy.uint8)]
+        return Image.frombuffer(mode, size, arr.tostring(), 'raw', mode, 0, 1)
+
 
 
 # what do u do when the dictionary key is a tuple, first item 
@@ -61,19 +73,35 @@ def image_list(cat_neighbors):
     # new_image_table = cat_neighbors.unpack('image_array')
     # print new_image_table
     img_dat = dict()
-    for i, v in enumerate(cat_neighbors['image_array']):
-        print '\n'   
-        print v
-        print '\n'
-        b = v[1:]
-        print b
-        # Now let's convert to an Sarray of image type. The images are of size 28 x 28 x 1
-        # (since they are grayscale). Since the scaling will still result in some non-integer
-        # values, we want to set allow_rounding to True.
+    # for i, v in enumerate(cat_neighbors['image_array']):
+    #     print '\n'   
+    #     img_sarry = gl.SArray(v)
+    #     print "img_arry is", img_sarry
+    #     print '\n'
+    #     img_dat[i] = img_sarry
+    #     print '\n'
+    cat_neighbors["image1"] = cat_neighbors['image_array'].pixel_array_to_image( 32, 32, 3, allow_rounding = True)
+    images = cat_neighbors["image1"]
 
-        # rslt_img_sarray = gl.SArray.pixel_array_to_image(v, 32, 32, 3, allow_rounding = True)
-  
-         # img_dat[i] = b
+    return render_template("imagelist.html", images=images)
+
+    # for i, v in enumerate(image_array):
+    #     print '\n'   
+    #     # b = v['image_array']
+    #     # img_sarray = gl.SArray(b)
+    #     # print img_sarray
+    #     # print '\n'
+    # print img_dat
+    #     rslt_img_sarray = gl.SArray.pixel_array_to_image(img_sarray, 32, 32, 3, allow_rounding = True)
+    #     print type(rslt_img_sarray)
+
+        # The images are of size 32 x 32 x 3 (RGB channels)
+        # (since they are RGB). Since the scaling will still result in some non-integer
+        # values, we want to set allow_rounding to True.
+        # rslt_img_sarray = gl.SArray.pixel_array_to_image(img_sarry, 32, 32, 3, allow_rounding = True)
+        # print type(rslt_img_sarray)
+    
+    # print img_dat
 
     # print img_dat
     # print image_array
@@ -96,7 +124,7 @@ def image_list(cat_neighbors):
     # b = np.array(cat_neighbors['id'])
     # print b
 
-    print "image", len(image_array)
+    # print "image", len(image_array)
     print "cat neighbors: ",  len(cat_neighbors)
     # image_array = image_array.reshape(len(cat_neighbors), len(image_array))
     # print image_array
