@@ -183,21 +183,3 @@ def model_query(model_type, label_type, knn_model):
 # ##############################################################################
 # Part 5: 
 
-# Overview:
-# 	server.py obtain image_id from db from the image the user clicks
-# 	sends image_id here to find the nearest neighbors
-# 	apply the deep features model to the images that the user chooses.
-
-
-# # Show images
-# def show_graphlab_image(i, image_train):
-
-#     img = Image(filename=image_train['label'][i], width=100, height=100)
-#     display(img)
-
-# def show_images(image_train, field):
-#     for x in image_train:
-#         x = x[field] # i.e : cat
-#         print "id " + str(x) + " -> " + image_train['label'] + ":"
-#         # show_graphlab_image(image_train, x)
-

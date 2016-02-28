@@ -35,105 +35,36 @@ def train():
     # test a generic model for cats
     knn_model = graph_lab.knn_model_generic(image_train)
     cat = image_train[18:19]
-    cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
-
-    # graph_lab.show_images(cat_neighbors, 'image') 
-    # cat_neighbors['image'].show()
-
-    # first version
-    print cat_neighbors['image_array']
-    print "***********************"
-
-    cat_neighbors["image_show"] = cat_neighbors['image_array'].pixel_array_to_image(32, 32, 3, allow_rounding = True)
-    print cat_neighbors
-    # print images
-    image_array = np.array(cat_neighbors['image_array'])
-    result = array2PIL(image_array, len(cat_neighbors['image_array']))
-
-
+    img_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
+    image_list(img_neighbors)
+    
+  
     return render_template("welcome.html")
 
-def array2PIL(arr, size):
-        mode = 'RGBA'
-        arr = arr.reshape(arr.shape[0]*arr.shape[1], arr.shape[2])
-        if len(arr[0]) == 3:
-            arr = numpy.c_[arr, 255*numpy.ones((len(arr),1), numpy.uint8)]
-        return Image.frombuffer(mode, size, arr.tostring(), 'raw', mode, 0, 1)
-
-
-
-# what do u do when the dictionary key is a tuple, first item 
-# is a string and the second item is a list of ints
-
 @app.route("/images")
-def image_list(cat_neighbors):
-    """Show grid of images."""
-    # holds an array column
-    image_array = np.array(cat_neighbors)
-    # new_image_table = cat_neighbors.unpack('image_array')
-    # print new_image_table
-    img_dat = dict()
-    # for i, v in enumerate(cat_neighbors['image_array']):
-    #     print '\n'   
-    #     img_sarry = gl.SArray(v)
-    #     print "img_arry is", img_sarry
-    #     print '\n'
-    #     img_dat[i] = img_sarry
-    #     print '\n'
-    cat_neighbors["image1"] = cat_neighbors['image_array'].pixel_array_to_image( 32, 32, 3, allow_rounding = True)
-    images = cat_neighbors["image1"]
+def image_list(img_neighbors):
+    """Show grid images."""
 
-    return render_template("imagelist.html", images=images)
+    # img_neighbors is a numpy array of images
+    # images is an empty list of dictionary images
+    images = [{} for i in range(len(img_neighbors))]
+    np_image_array = img_neighbors['image_array'].to_numpy()
 
-    # for i, v in enumerate(image_array):
-    #     print '\n'   
-    #     # b = v['image_array']
-    #     # img_sarray = gl.SArray(b)
-    #     # print img_sarray
-    #     # print '\n'
-    # print img_dat
-    #     rslt_img_sarray = gl.SArray.pixel_array_to_image(img_sarray, 32, 32, 3, allow_rounding = True)
-    #     print type(rslt_img_sarray)
+    for i, v in enumerate(np_image_array):
+        # print "i is: " , i
+        # print "v is: " , v
 
-        # The images are of size 32 x 32 x 3 (RGB channels)
-        # (since they are RGB). Since the scaling will still result in some non-integer
-        # values, we want to set allow_rounding to True.
-        # rslt_img_sarray = gl.SArray.pixel_array_to_image(img_sarry, 32, 32, 3, allow_rounding = True)
-        # print type(rslt_img_sarray)
-    
-    # print img_dat
-
-    # print img_dat
-    # print image_array
-    # holds pixel data
-    print "***********************"
-    print '\n'
-    a = np.array(cat_neighbors['image_array'])
-    print "***********************"
-    print '\n'
-    # print cat_neighbors['id']
-    # print cat_neighbors.filter_by('image_array')
-    print '\n'
-    # print "***********************"
-    # print cat_neighbors['image_array']
-    # print a
-
-    # img = PIL.Image.fromarray(a)
-
-    # # holds id of images
-    # b = np.array(cat_neighbors['id'])
-    # print b
-
-    # print "image", len(image_array)
-    print "cat neighbors: ",  len(cat_neighbors)
-    # image_array = image_array.reshape(len(cat_neighbors), len(image_array))
-    # print image_array
-
-    # images = Image.query.all()
-    # return render_template("image_list.html")
-
-# def transform_to_pil(pix):
-#     data = list(tuple(pixel) for pixel in pix)
+        # img1 = np_image_array[i]
+        img_reshaped = np.reshape(v, (32,32,3))
+        img = Image.fromarray(img_reshaped, 'RGBA')
+        img_name = 'img', i, '.png'
+        img.save(img_name)
+        # img_deats = {'id': i, 'url' : img_name}
+        # images.append(img_deats)
+   
+    return images
+  
+    # return render_template("imagelist.html", images=images)
 
 @app.route('/cats')
 def show_cats(image_train):
