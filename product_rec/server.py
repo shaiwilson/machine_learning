@@ -36,11 +36,30 @@ def train():
     cat = image_train[18:19]
     img_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
   
-    images = [[] for i in range(len(img_neighbors))]
-    np_image_array = img_neighbors['image_array'].to_numpy()
-    print type(np_image_array)
-    print np_image_array.shape
+    images = []
     
+    for i, v in enumerate(img_neighbors['image_array']):
+        np_image_array = img_neighbors['image_array'][i]
+        new_np_array = np.array(np_image_array)
+        images.append(new_np_array)
+
+    get_images(images)
+
+    # print img_neighbors['image_array'][0]
+    # print "**************************"
+    # print img_neighbors['image_array'][1]
+    # print "**************************"
+    # print img_neighbors['image_array'][2]
+    # print "**************************"
+    # print img_neighbors['image_array'][3]
+    # print "**************************"
+    # print img_neighbors['image_array'][4]
+
+    # print type(np_image_array)
+    # print np_image_array.shape
+    # img_reshaped = np.reshape(np_image_array[0], (32,32, 3))
+    # img_name = "img_" + img_index 
+    # img.save(img_name + ".PNG")
 
    
     # for i, v in enumerate(np_image_array):
@@ -75,8 +94,8 @@ def show_list(img_neighbors):
     # img_neighbors is a numpy array of images
     # images is an empty list of dictionary images
     images = [[] for i in range(len(img_neighbors))]
-    np_image_array = img_neighbors['image_array'].to_numpy()
-    print img_neighbors['image_array']
+  
+
 
     format = 'PNG'
     for i, v in enumerate(np_image_array):
