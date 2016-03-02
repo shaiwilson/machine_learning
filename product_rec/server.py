@@ -24,93 +24,71 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 @app.route('/welcome')
+def show_welcome():
+    """ Show the homepage """
+
+    return render_template("welcome.html")
+
 def train():
     """Train image data."""
 
-
-    gl.canvas.set_target('browser')
     image_train = graph_lab.my_batch_job('seed_data/image_train_data/')
 
-    # test a generic model for cats
+    # test a generic model 
     knn_model = graph_lab.knn_model_generic(image_train)
+    # this needs to change
     cat = image_train[18:19]
+
+    # get nearest neighbors
     img_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
   
+    return img_neighbors
+
+# button on the welcome page that redirects to the show page
+@app.route('/show')
+def get_images():
+    """ Call show image function """
+
+    img_neighbors = train()
+
     images = []
     
     for i, v in enumerate(img_neighbors['image_array']):
         np_image_array = img_neighbors['image_array'][i]
-        new_np_array = np.array(np_image_array)
-        images.append(new_np_array)
-
-    get_images(images)
-
-    # print img_neighbors['image_array'][0]
-    # print "**************************"
-    # print img_neighbors['image_array'][1]
-    # print "**************************"
-    # print img_neighbors['image_array'][2]
-    # print "**************************"
-    # print img_neighbors['image_array'][3]
-    # print "**************************"
-    # print img_neighbors['image_array'][4]
-
-    # print type(np_image_array)
-    # print np_image_array.shape
-    # img_reshaped = np.reshape(np_image_array[0], (32,32, 3))
-    # img_name = "img_" + img_index 
-    # img.save(img_name + ".PNG")
-
-   
-    # for i, v in enumerate(np_image_array):
-    #     # print "i is: " , i
-    #     # print "v is: " , v
-    #     print v 
-    #     img_reshaped = np.reshape(v, (32,32,3))
-
-
-    #     img = Image.fromarray(img_reshaped, 'RGB')
-    #     img_index = str(i)
-    #     img_name = "img_" + img_index 
-    #     img.save('static/imgs/' + img_name + ".PNG")
-    #     image_path = 'static/imgs/' + img_name + ".PNG" 
-    #     images[i] = image_path
-  
-
-    return render_template("welcome.html")
-
-# button on the welcome page that redirects to the show page
-@app.route('/show')
-def get_images(img_neighbors):
-    """ Call show image function """
+        # new_np_array = np.array(np_image_array)
+        images.append(np_image_array)
 
     images = show_list(img_neighbors)
     
     return render_template("imagelist.html", images=images)
 
 def show_list(img_neighbors):
-    """Show grid images."""
+    """Convert pixel data to img format."""
 
     # img_neighbors is a numpy array of images
     # images is an empty list of dictionary images
     images = [[] for i in range(len(img_neighbors))]
-  
 
+    print type(img_neighbors)
 
-    format = 'PNG'
-    for i, v in enumerate(np_image_array):
-        # print "i is: " , i
+    for i, v in enumerate(img_neighbors):
+        print "i is: " , i
         # print "v is: " , v
-        print v 
-        img_reshaped = np.reshape(v, (32,32,3))
+        pixel_array = v.get('image_array')
+        new_np_array = np.array(pixel_array)
+        print type(new_np_array)
+        print np.reshape(pixel_array, (32, 32))
 
 
-        img = Image.fromarray(img_reshaped, 'RGB')
-        img_index = str(i)
-        img_name = "img_" + img_index 
-        img.save('static/imgs/' + img_name + ".PNG")
-        image_path = 'static/imgs/' + img_name + ".PNG" 
-        images[i] = image_path
+
+        
+        # img_reshaped = np.reshape(pixel_array, (32, 32, 3))
+        # img = Image.fromarray(img_reshaped, 'RGB')
+        # img_index = str(i)
+        # img_name = "img_" + img_index 
+        # img.save('static/imgs/' + img_name + ".PNG")
+        # image_path = 'static/imgs/' + img_name + ".PNG" 
+        # images[i] = image_path
   
     return images 
 
