@@ -80,12 +80,13 @@ def show_list(img_neighbors):
         print type(new_np_array)
         img_reshaped = np.reshape(pixel_array, (32, 32, 3))
         print img_reshaped.shape
-        # img = Image.fromarray(img_reshaped, 'RGB')
-        # img.show()
+        width, height, numChan = img_reshaped.shape
+        print img_reshaped
+        im = Image.fromarray(np.uint8(img_reshaped))
+        im.show()
 
 
-        # img_reshaped = np.reshape(pixel_array, (32, 32, 3))
-        # img = Image.fromarray(img_reshaped, 'RGB')
+       
         # img_index = str(i)
         # img_name = "img_" + img_index 
         # img.save('static/imgs/' + img_name + ".PNG")
