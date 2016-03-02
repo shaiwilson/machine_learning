@@ -23,7 +23,7 @@ app.secret_key = "ABC"
 # This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 
-@app.route('/welcome')
+@app.route('/')
 def show_welcome():
     """ Show the homepage """
 
@@ -71,6 +71,8 @@ def show_list(img_neighbors):
 
     # SFRAME DATA STRUCTURE
     # print type(img_neighbors)
+    wpercent = (basewidth/float(img.size[0]))
+    hsize = int((float(img.size[1])*float(wpercent)))
 
     for i, v in enumerate(img_neighbors):
         pixel_array = v.get('image_array')
@@ -81,6 +83,7 @@ def show_list(img_neighbors):
         # img.show()
         img_index = str(i)
         img_name = "img_" + img_index
+        img = img.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
         img.save('static/imgs/' + img_name + ".PNG")
         image_path = img_name + ".PNG" 
         images[i] = image_path
@@ -96,17 +99,6 @@ def show_cats(image_train):
     cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
     print cat_neighbors
 
-
-@app.route('/show')
-def view_method():
-    response = send_file(tempFileObj, as_attachment=True, attachment_filename='myfile.jpg')
-    return response
-
-@app.route('/')
-def index():
-    """Homepage."""
-
-    return render_template("homepage.html")
 
 @app.route('/search')
 def show_search_form():
