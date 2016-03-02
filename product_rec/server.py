@@ -69,10 +69,9 @@ def show_list(img_neighbors):
     # imgages will hold the image_array for each image
     images = [[] for i in range(len(img_neighbors))]
 
-    # SFRAME DATA STRUCTURE
-    # print type(img_neighbors)
-    wpercent = (basewidth/float(img.size[0]))
-    hsize = int((float(img.size[1])*float(wpercent)))
+    # basewidth = 300
+    # maxsize = (1028, 1028)
+    # image.thumbnail(maxsize, Image.ANTIALIAS)
 
     for i, v in enumerate(img_neighbors):
         pixel_array = v.get('image_array')
@@ -83,7 +82,8 @@ def show_list(img_neighbors):
         # img.show()
         img_index = str(i)
         img_name = "img_" + img_index
-        img = img.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
+
+        # img = img.resize((basewidth,hsize), Image.ANTIALIAS)
         img.save('static/imgs/' + img_name + ".PNG")
         image_path = img_name + ".PNG" 
         images[i] = image_path
@@ -103,6 +103,8 @@ def show_cats(image_train):
 @app.route('/search')
 def show_search_form():
     """Search page."""
+
+
 
     return render_template("search.html")
 
@@ -126,14 +128,29 @@ def search_db():
 def add_tag():
     """Add/edit a tag"""
 
-    # # get form variables
-    # new_tag = request.form["tag"]
-    # image_id = request.form["image_id"]
-    # if not tag:
-    #     raise Exception("No tag given")
+    # Get form variables
+    tag_label = request.form["query"]
+    image_id = request.form["image_id"]
 
+    if not image_id:
+        raise Exception("No image to tag")
 
-# SHOW ALL ROUTES
+    all_tags = Image_Tags.query.filter_by(image_id=image_id).all()
+
+    if all_tags:
+        # add new tag to list of tags stored in db
+        flash("Tag added.")
+
+    else:
+        # add new tag list to database
+        tag_label = Tag(tag_label=tag_label)
+        flash("Rating added.")
+        db.session.add(all_tags)
+
+    db.session.commit()
+
+    return redirect("/images/%s" % image_id)
+
 
 @app.route("/tags")
 def tag_list():
