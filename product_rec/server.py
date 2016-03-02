@@ -36,7 +36,9 @@ def train():
 
     # test a generic model 
     knn_model = graph_lab.knn_model_generic(image_train)
-    # this needs to change
+
+
+    # this needs to change with the images
     cat = image_train[18:19]
 
     # get nearest neighbors
@@ -44,10 +46,9 @@ def train():
   
     return img_neighbors
 
-# button on the welcome page that redirects to the show page
 @app.route('/show')
 def get_images():
-    """ Call show image function """
+    """ Collect images to be shown. """
 
     img_neighbors = train()
 
@@ -55,7 +56,6 @@ def get_images():
     
     for i, v in enumerate(img_neighbors['image_array']):
         np_image_array = img_neighbors['image_array'][i]
-        # new_np_array = np.array(np_image_array)
         images.append(np_image_array)
 
     images = show_list(img_neighbors)
@@ -65,33 +65,25 @@ def get_images():
 def show_list(img_neighbors):
     """Convert pixel data to img format."""
 
-    # img_neighbors is a numpy array of images
-    # images is an empty list of dictionary images
+    # img_neighbors is a list of dictionaries
+    # imgages will hold the image_array for each image
     images = [[] for i in range(len(img_neighbors))]
 
     # SFRAME DATA STRUCTURE
-    print type(img_neighbors)
+    # print type(img_neighbors)
 
     for i, v in enumerate(img_neighbors):
-        print "i is: " , i
-        # print "v is: " , v
         pixel_array = v.get('image_array')
         new_np_array = np.array(pixel_array)
-        print type(new_np_array)
         img_reshaped = np.reshape(pixel_array, (32, 32, 3))
-        print img_reshaped.shape
         width, height, numChan = img_reshaped.shape
-        print img_reshaped
-        im = Image.fromarray(np.uint8(img_reshaped))
-        im.show()
-
-
-       
-        # img_index = str(i)
-        # img_name = "img_" + img_index 
-        # img.save('static/imgs/' + img_name + ".PNG")
-        # image_path = 'static/imgs/' + img_name + ".PNG" 
-        # images[i] = image_path
+        img = Image.fromarray(np.uint8(img_reshaped))
+        # img.show()
+        img_index = str(i)
+        img_name = "img_" + img_index
+        img.save('static/imgs/' + img_name + ".PNG")
+        image_path = img_name + ".PNG" 
+        images[i] = image_path
   
     return images 
 
