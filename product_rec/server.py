@@ -69,6 +69,7 @@ def show_list(img_neighbors):
     # images is an empty list of dictionary images
     images = [[] for i in range(len(img_neighbors))]
 
+    # SFRAME DATA STRUCTURE
     print type(img_neighbors)
 
     for i, v in enumerate(img_neighbors):
@@ -77,11 +78,12 @@ def show_list(img_neighbors):
         pixel_array = v.get('image_array')
         new_np_array = np.array(pixel_array)
         print type(new_np_array)
-        print np.reshape(pixel_array, (32, 32))
+        img_reshaped = np.reshape(pixel_array, (32, 32, 3))
+        print img_reshaped.shape
+        # img = Image.fromarray(img_reshaped, 'RGB')
+        # img.show()
 
 
-
-        
         # img_reshaped = np.reshape(pixel_array, (32, 32, 3))
         # img = Image.fromarray(img_reshaped, 'RGB')
         # img_index = str(i)
