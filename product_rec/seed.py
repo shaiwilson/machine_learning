@@ -19,7 +19,7 @@ def load_images():
         except ValueError:
            pass      # or whatever
 
-        image = Image(image_id=image_id,
+        image = Image(id=image_id,
                     image_label=label)
 
         # We need to add to the session or it won't ever be stored

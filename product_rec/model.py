@@ -8,55 +8,43 @@ db = SQLAlchemy()
 # Model definitions
 
 
+image_tags = db.Table('image_tags',
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+    db.Column('image_id', db.Integer, db.ForeignKey('images.id'))
+)
+
 class Image(db.Model):
     """User of ratings website."""
 
     __tablename__ = "images"
 
-    image_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     image_label = db.Column(db.String(64), nullable=False) 
+
+    tags = db.relationship('Tag', secondary=image_tags,
+        backref=db.backref('images', lazy='dynamic'))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Image image_id=%s label=%s>" % (self.image_id, self.image_label)
+        return "<Image image_id=%s label=%s>" % (self.id, self.image_label)
 
 class Tag(db.Model):
     """Association table for image tags."""
 
-    __tablename__ = "tags"
+    __tablename__ = "tag"
 
-    tag_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    tag_label = db.Column(db.String(64), nullable=False)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
 
-
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-
-        return "<Tag tag_id=%s label=%s>" % (self.tag_id, self.tag_label)
-
-class Image_Tags(db.Model):
-    """Tags of an image by image."""
-
-    __tablename__ = "imagetags"
-
-    id = db.Column(db.Integer, primary_key=True)
-    image_id = db.Column(db.Integer, db.ForeignKey('images.image_id'), nullable=False)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'), nullable=False)
-
-    # Define relationship to Images
-    image = db.relationship("Image",
-                            backref=db.backref("imagetags", order_by=image_id))
-
-     # Define relationship to Images
-    tag = db.relationship("Tag",
-                            backref=db.backref("imagetags", order_by=tag_id))
+    def __init__(self, *args, **kwargs):
+        super(Tag, self).__init__(*args, **kwargs)
+    
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Tag image_id=%s tag_id=%s>" % (self.iamge_id, self.tag_id)
-
+        return "<Tag tag_id=%s label=%s>" % (self.id, self.name)
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

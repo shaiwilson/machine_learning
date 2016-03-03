@@ -7,7 +7,7 @@ from jinja2 import StrictUndefined
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
-from model import connect_to_db, db, Image, Tag, Image_Tags
+from model import connect_to_db, db, Image, Tag
 from array import array
 from PIL import Image
 import numpy as np
@@ -144,8 +144,8 @@ def add_tag():
     else:
         # add new tag list to database
         tag_label = Tag(tag_label=tag_label)
-        flash("Rating added.")
-        db.session.add(all_tags)
+        flash("Tag added.")
+        db.session.add(tag_label)
 
     db.session.commit()
 
