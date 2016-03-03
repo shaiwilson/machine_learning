@@ -13,6 +13,7 @@ from PIL import Image
 import numpy as np
 import graphlab as gl
 import graph_lab
+from helpers import object_list
 
 app = Flask(__name__)
 
@@ -108,6 +109,12 @@ def show_search_form():
 
     return render_template("search.html")
 
+# @app.route('/all')
+# def show_all_images():
+#     """Show all images in the db."""
+
+#     images = Image.query.order_by(Image.created_timestamp.desc())
+#     return object_list('imagelist.html', images)
 
 @app.route('/search_tags', methods=["POST"])
 def search_db():

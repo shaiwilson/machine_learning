@@ -10,6 +10,13 @@
            <input type="hidden" name="image_id" value="{{ image.image_id }}">
           <input type="submit" value="Add Tag">
       </form>
-  {% endif %}
+ 
+{% block sidebar %}
+  <ul class="well nav nav-list">
+    <li><h4>Tags</h4></li>
+    {% for tag in image.tags %}
+      <li>{ tag.name }}</li>
+    {% endfor %}
+  </ul>
 
 {% endblock %}
