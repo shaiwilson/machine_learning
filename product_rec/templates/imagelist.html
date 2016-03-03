@@ -3,11 +3,10 @@
 
 <h1> Cool pics </h1>
     <div id="gallery">
-        {% for image in images %}
+        {% for id, url in images.iteritems() %}
             <div>
-                <button id="{{ image }}" class="favorite-btn">&hearts; Add Tags</button>
                 <li>
-               <img src="static/imgs/{{ image }}">
+               <a href="/images/{{ id }}"><img src="static/imgs/{{ url }}"></a>
                 </li>
             </div>
         {% endfor %}

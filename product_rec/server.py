@@ -54,21 +54,21 @@ def get_images():
 
     img_neighbors = train()
 
-    images = {}
+    raw_images = []
+    static_img = []
     
     for i, v in enumerate(img_neighbors['image_array']):
         np_image_array = img_neighbors['image_array'][i]
         image_id = img_neighbors['id'][i]
-        images[image_id] = np_image_array
-        # images.append(np_image_array)
-
-
-    img_array = images.values()
-    print img_array
-    images = show_list(img_array)
+        print image_id
+        raw_images.append(np_image_array)
+        static_img.append(image_id)
 
     
-    return render_template("imagelist.html", images=images)
+    images = show_list(raw_images)
+    img_id_dict = dict(zip(static_img, images))
+    
+    return render_template("imagelist.html", images=img_id_dict)
 
 def get_images_by_query(q):
     img_neighbors = train()
@@ -86,7 +86,7 @@ def show_list(img_neighbors):
     """Convert pixel data to img format."""
 
     # img_neighbors is a list of dictionaries
-    # imgages will hold the image_array for each image
+    # imgaes will hold the image_array for each image
     images = [[] for i in range(len(img_neighbors))]
 
     # basewidth = 300
@@ -94,7 +94,7 @@ def show_list(img_neighbors):
     # image.thumbnail(maxsize, Image.ANTIALIAS)
 
     for i, v in enumerate(img_neighbors):
-        pixel_array = v.get('image_array')
+        pixel_array = v
         new_np_array = np.array(pixel_array)
         img_reshaped = np.reshape(pixel_array, (32, 32, 3))
         width, height, numChan = img_reshaped.shape
