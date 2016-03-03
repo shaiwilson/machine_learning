@@ -54,13 +54,19 @@ def get_images():
 
     img_neighbors = train()
 
-    images = []
+    images = {}
     
     for i, v in enumerate(img_neighbors['image_array']):
         np_image_array = img_neighbors['image_array'][i]
-        images.append(np_image_array)
+        image_id = img_neighbors['id'][i]
+        images[image_id] = np_image_array
+        # images.append(np_image_array)
 
-    images = show_list(img_neighbors)
+
+    img_array = images.values()
+    print img_array
+    images = show_list(img_array)
+
     
     return render_template("imagelist.html", images=images)
 

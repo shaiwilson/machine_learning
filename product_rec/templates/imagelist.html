@@ -1,4 +1,4 @@
-{% extends"base_images.html" %}
+{% extends "base_images.html" %}
 {% block content %}
 
 <h1> Cool pics </h1>
@@ -7,7 +7,7 @@
             <div>
                 <button id="{{ image }}" class="favorite-btn">&hearts; Add Tags</button>
                 <li>
-                <a href="/images/{{ image.id }}"><img src="static/imgs/{{ image }}"></a>
+               <img src="static/imgs/{{ image }}">
                 </li>
             </div>
         {% endfor %}
