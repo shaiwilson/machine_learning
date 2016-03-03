@@ -28,8 +28,10 @@
         {% endif %}
     {% endwith %}
 
-  {% block content %} put your content here {% endblock %}
-
+{% block content %}
+  {% include "/includes/list.html" %}
+  {% include "/includes/page_links.html" %}
+{% endblock %}
 
 
  <!--scripts loaded here from cdn for performance -->

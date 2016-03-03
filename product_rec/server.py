@@ -13,7 +13,7 @@ from PIL import Image
 import numpy as np
 import graphlab as gl
 import graph_lab
-from helpers import object_list
+from helper import object_list
 
 app = Flask(__name__)
 
