@@ -140,10 +140,6 @@ def add_tag():
     tag_string = request.form["query"]
     new_tags = get_tags_from_string(tag_string)
 
-
-
-
-
     if not image_id:
         raise Exception("No image to tag")
 
