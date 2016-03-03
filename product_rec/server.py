@@ -105,8 +105,6 @@ def show_cats(image_train):
 def show_search_form():
     """Search page."""
 
-
-
     return render_template("search.html")
 
 # @app.route('/all')
@@ -126,7 +124,6 @@ def search_db():
 
     # image_ids = Image.query.filter_by(image_label=text_query).all()
 
-
     # return render_template("results.html")
 
 
@@ -135,9 +132,17 @@ def search_db():
 def add_tag():
     """Add/edit a tag"""
 
+    # hold a list of new tags from string input
+    new_tags = []
+
     # Get form variables
-    tag_label = request.form["query"]
     image_id = request.form["image_id"]
+    tag_string = request.form["query"]
+    new_tags = get_tags_from_string(tag_string)
+
+
+
+
 
     if not image_id:
         raise Exception("No image to tag")
@@ -158,16 +163,55 @@ def add_tag():
 
     return redirect("/images/%s" % image_id)
 
+def get_tags_from_string(tag_string):
+        raw_tags = tag_string.split(',')
+
+        # Filter out any empty tag names.
+        tag_names = [name.strip() for name in raw_tags if name.strip()]
+
+        # Query the database and retrieve any tags we have already saved.
+        existing_tags = Tag.query.filter(Tag.name.in_(tag_names))
+
+        # Determine which tag names are new.
+        new_names = set(tag_names) - set([tag.name for tag in existing_tags])
+
+        # Create a list of unsaved Tag instances for the new tags.
+        new_tags = [Tag(name=name) for name in new_names]
+
+        # Return all the existing tags + all the new, unsaved tags.
+        return list(existing_tags) + new_tags
+ 
+
+@app.route('/create/')
+def create():
+    # form = EntryForm()
+    return render_template('create.html')
+
+# @entries.route('/create/', methods=['GET', 'POST'])
+# def create():
+#     if request.method == 'POST':
+#         form = EntryForm(request.form)
+#         if form.validate():
+#             entry = form.save_entry(Entry())
+#             db.session.add(entry)
+#             db.session.commit()
+#             return redirect(url_for('entries.detail'))
+#     else:
+#         form = EntryForm()
+
+#     return render_template('entries/create.html', form=form)
 
 @app.route("/tags")
 def tag_list():
     """Show list of tags."""
+
 
     tags = Tag.query.all()
     return render_template("tags_list.html", tags=tags)
 
 
 if __name__ == "__main__":
+
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
     app.debug = True
