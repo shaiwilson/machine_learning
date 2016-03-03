@@ -39,7 +39,6 @@ def train():
     # test a generic model 
     knn_model = graph_lab.knn_model_generic(image_train)
 
-
     # this needs to change with the images
     cat = image_train[18:19]
 
@@ -47,6 +46,7 @@ def train():
     img_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
   
     return img_neighbors
+
 
 @app.route('/show')
 def get_images():
@@ -63,6 +63,18 @@ def get_images():
     images = show_list(img_neighbors)
     
     return render_template("imagelist.html", images=images)
+
+def get_images_by_query(q):
+    img_neighbors = train()
+
+    images = []
+    
+    for i, v in enumerate(img_neighbors['image_array']):
+        np_image_array = img_neighbors['image_array'][i]
+        images.append(np_image_array)
+
+    images = show_list(img_neighbors)
+
 
 def show_list(img_neighbors):
     """Convert pixel data to img format."""
@@ -108,6 +120,7 @@ def show_search_form():
 
     return render_template("search.html")
 
+
 # @app.route('/all')
 # def show_all_images():
 #     """Show all images in the db."""
@@ -120,7 +133,7 @@ def search_db():
     """Search page."""
 
     text_query = request.form["query"]
-    print text_query
+
     return render_template("search.html")
 
     # image_ids = Image.query.filter_by(image_label=text_query).all()
@@ -201,7 +214,6 @@ def create():
 @app.route("/tags")
 def tag_list():
     """Show list of tags."""
-
 
     tags = Tag.query.all()
     return render_template("tags_list.html", tags=tags)

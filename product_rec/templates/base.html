@@ -8,15 +8,34 @@
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="/static/js/favorites.js"></script>
 
-  <!-- Bootstrap -->
-  <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
-            rel="stylesheet">
+  
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/css/styles.css">
 
-    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
 
 </head>
 
 <body>
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{% block branding %}Better Name{% endblock %}</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            {% block extra_nav %}{% endblock %}
+          </ul>
+        </div>
+      </div>
+    </div>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -28,12 +47,32 @@
         {% endif %}
     {% endwith %}
 
-{% block content %}
-  {% include "/includes/list.html" %}
-  {% include "/includes/page_links.html" %}
-{% endblock %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9">
+          <h1>{% block content_title %}{% endblock %}</h1>
+          {% block content %}
+          {% include "/includes/list.html" %}
+          {% include "/includes/page_links.html" %}
+          {% endblock %}
+        </div>
+        <div class="col-md-3">
+          {% block sidebar %}
+          <ul class="well nav nav-stacked">
+            <li><a href="#">Sidebar item</a></li>
+          </ul>
+          {% endblock %}
+        </div>
+      </div>
+      <div class="row">
+        <hr />
+        <footer>
+          <p>&copy; Shai Wilson</p>
+        </footer>
+      </div>
+    </div>
 
-
+          
  <!--scripts loaded here from cdn for performance -->
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

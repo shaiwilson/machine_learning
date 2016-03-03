@@ -5,8 +5,10 @@
     <div id="gallery">
         {% for image in images %}
             <div>
-                <button id="{{ image }}" class="favorite-btn">&hearts; Favorite</button>
-                <img src="static/imgs/{{ image }}"></a>
+                <button id="{{ image }}" class="favorite-btn">&hearts; Add Tags</button>
+                <li>
+                <a href="/images/{{ image.id }}"><img src="static/imgs/{{ image }}"></a>
+                </li>
             </div>
         {% endfor %}
     </div>
