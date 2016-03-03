@@ -14,6 +14,7 @@ import numpy as np
 import graphlab as gl
 import graph_lab
 from helper import object_list
+from forms import ImageForm
 
 app = Flask(__name__)
 
@@ -180,8 +181,8 @@ def get_tags_from_string(tag_string):
 
 @app.route('/create/')
 def create():
-    # form = EntryForm()
-    return render_template('create.html')
+    form = ImageForm()
+    return render_template('create.html', form=form)
 
 # @entries.route('/create/', methods=['GET', 'POST'])
 # def create():
