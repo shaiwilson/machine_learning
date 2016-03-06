@@ -9,7 +9,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from model import connect_to_db, db, Image, Tag
 from array import array
-from PIL import Image
+from PIL import Image as PILImage 
 import numpy as np
 import graphlab as gl
 import graph_lab
@@ -70,6 +70,7 @@ def get_images():
     
     return render_template("imagelist.html", images=img_id_dict)
 
+
 def get_images_by_query(q):
     img_neighbors = train()
 
@@ -98,7 +99,7 @@ def show_list(img_neighbors):
         new_np_array = np.array(pixel_array)
         img_reshaped = np.reshape(pixel_array, (32, 32, 3))
         width, height, numChan = img_reshaped.shape
-        img = Image.fromarray(np.uint8(img_reshaped))
+        img = PILImage.fromarray(np.uint8(img_reshaped))
         # img.show()
         img_index = str(i)
         img_name = "img_" + img_index
@@ -110,15 +111,6 @@ def show_list(img_neighbors):
   
     return images 
 
-@app.route('/cats')
-def show_cats(image_train):
-    """Show cat images."""
-
-    cat = image_train[18:19]
-    knn_model = graph_lab.knn_model_generic(image_train)
-    cat_neighbors = graph_lab.get_images_from_ids(image_train, knn_model.query(cat))
-    print cat_neighbors
-
 
 @app.route('/search')
 def show_search_form():
@@ -127,27 +119,42 @@ def show_search_form():
     return render_template("search.html")
 
 
-# @app.route('/all')
-# def show_all_images():
-#     """Show all images in the db."""
-
-#     images = Image.query.order_by(Image.created_timestamp.desc())
-#     return object_list('imagelist.html', images)
-
 @app.route('/search_tags', methods=["POST"])
 def search_db():
-    """Search page."""
+    """Search for tags in the db."""
 
     text_query = request.form["query"]
 
-    return render_template("search.html")
+    # returns a list of tags
+    new_tags = get_tags_from_string(text_query)
 
-    # image_ids = Image.query.filter_by(image_label=text_query).all()
+    print new_tags
 
-    # return render_template("results.html")
+    return 'hi'
 
+    # all_tags = Image.query.filter_by(Tag.name == text_query,
+    #     ).all()
 
-# ADD UPDATE DB
+    # print all_tags
+
+def search_tags_by_name(q):
+    """Returns a list of images that contain or is equal to query."""
+
+    q = "%" + q + "%"
+    return Brand.query.filter(Brand.name.like(q)).all()
+
+    # return render_template("search.html")
+
+@app.route("/images/<int:image_id>", methods=['GET'])
+def image_detail(image_id):
+    """Show tags for one image."""
+
+    image = Image.query.get(image_id)
+
+    return render_template(
+        "image_detail.html")
+
+# TODO: ADD UPDATE TO DB
 @app.route("/images/<int:image_id>", methods=['POST'])
 def add_tag():
     """Add/edit a tag"""
