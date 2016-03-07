@@ -6,6 +6,9 @@ When shown a photo of a flower, for example, the software responds with a group 
 
 View uses a large collection of data from the imagenet competition to simulate a neural network for processing incoming data. The rules are simple, search by text or image and view provides you with images within the same classification. Users can also contribute by tagging images to help enhance the image search process.
 
+## Tech Stack
+Python, Graph Lab Create, Pillow, PostgreSQL, Numpy, Flask, Jinja
+
 ## Installation
 
 Add Graph Lab Create to your virtualenv:
@@ -35,4 +38,5 @@ Run the server:
 python server.py
 ```
 
-You have to be sure that you added a licensed copy of the [Graph Lab Create](https://dato.com/download/install-graphlab-create-command-line.html)
+You have to be sure that you added a licensed copy of [Graph Lab Create](https://dato.com/download/install-graphlab-create-command-line.html)
+
