@@ -1,16 +1,28 @@
-{% extends "base_images.html" %}
+{% extends 'base.html' %}
 {% block content %}
 
-<h1> Cool pics </h1>
-    <div id="gallery">
-        {% for id, url in images.iteritems() %}
-            <div>
-                <li>
-               <a href="/images/{{ id }}"><img src="static/imgs/{{ url }}"></a>
-                </li>
+<!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            
+            <div class="col-lg-12">
+                <h1 class="page-header"> Images </h1>
             </div>
-        {% endfor %}
-    </div>
+
+
+            {% for id, url in images.iteritems() %}
+
+            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                <a href="/images/{{ id }}">
+                    <img src="static/imgs/{{ url }}"></a>
+                </a>
+            </div>
+
+            {% endfor %}
+            </div>
+        </div>
+
 
 
 {% endblock %}

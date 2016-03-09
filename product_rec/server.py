@@ -90,9 +90,7 @@ def show_list(img_neighbors):
     # imgaes will hold the image_array for each image
     images = [[] for i in range(len(img_neighbors))]
 
-    # basewidth = 300
-    # maxsize = (1028, 1028)
-    # image.thumbnail(maxsize, Image.ANTIALIAS)
+    basewidth = 300
 
     for i, v in enumerate(img_neighbors):
         pixel_array = v
@@ -100,11 +98,12 @@ def show_list(img_neighbors):
         img_reshaped = np.reshape(pixel_array, (32, 32, 3))
         width, height, numChan = img_reshaped.shape
         img = PILImage.fromarray(np.uint8(img_reshaped))
-        # img.show()
+        wpercent = (basewidth/float(img.size[0]))
+        hsize = int((float(img.size[1])*float(wpercent)))
+        img = img.resize((basewidth,hsize), PILImage.ANTIALIAS)
         img_index = str(i)
         img_name = "img_" + img_index
-
-        # img = img.resize((basewidth,hsize), Image.ANTIALIAS)
+        
         img.save('static/imgs/' + img_name + ".PNG")
         image_path = img_name + ".PNG" 
         images[i] = image_path

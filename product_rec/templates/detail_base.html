@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} Image Detail {% endblock %}
+
+{% block sidebar %}
+ <!--  <ul class="well nav nav-list">
+    <li><h4>Tags</h4></li>
+    {% for tag in entry.tags %}
+      <li><a href="{{ url_for('tag_detail') }}">{{ tag.name }}</a></li>
+    {% endfor %}
+  </ul>
+ -->
+{% endblock %}
+
+{% block content %}
+  {{ image }}
+{% endblock %}
